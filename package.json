@@ -1,16 +1,22 @@
 {
-    "name": "toast",
-    "version": "1.0.0",
-    "main": "index.js",
+    "name": "sonner-js",
+    "version": "0.0.1",
+    "main": "./dist/esm/index.js",
+    "module": "./dist/esm/index.js",
     "type": "module",
     "scripts": {
         "dev": "rollup -c -w",
-        "build": "rollup -c && cp ./dist/esm/index.d.ts ./dist/cjs/index.d.ts"
+        "build": "rollup -c"
     },
+    "homepage": "https://github.com/huanfei/sonner-js",
+    "bugs": "https://github.com/huanfei/sonner-js/issues",
+    "files": [
+        "dist"
+    ],
     "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "description": "",
+    "author": "huanfei",
+    "license": "MIT",
+    "description": "An opinionated toast component for Vanilla JS.",
     "devDependencies": {
         "@rollup/plugin-commonjs": "^28.0.3",
         "@rollup/plugin-typescript": "^12.1.2",
