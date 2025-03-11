@@ -1,6 +1,7 @@
 const CONTAINER_ID = 'toast-container';
 const DURATION = 3000;
 const OFFSET = 10;
+const MAX_COUNT = 5;
 
 type Options = {
     description?: string;
@@ -44,7 +45,7 @@ export function createCard(message: string, { description, icon }: Options = {})
     }
 
     card.className = 'card';
-    card.style.transform = 'translateY(120%)';
+    card.style.transform = 'translateY(calc(var(--lift) * -120%))';
 
     container.appendChild(card);
 
@@ -53,19 +54,24 @@ export function createCard(message: string, { description, icon }: Options = {})
     });
 
     setTimeout(() => {
-        card.style.setProperty('--offset', `${-(getOffset(card) - card.offsetHeight - OFFSET)}px`);
+        card.setAttribute('data-state', 'deleting');
+        card.style.setProperty('--offset', `${getOffset(card) - card.offsetHeight}px`);
         card.style.setProperty('--opacity', '0');
-        setTimeout(() => container.removeChild(card), 100);
+        card.addEventListener('transitionend', () => container.removeChild(card), { once: true });
     }, DURATION);
+
     return card;
 }
 
 function assignOffset() {
-    const cards = [...document.querySelectorAll('#toast-container li')].reverse();
-    cards.forEach(card => {
+    const cards = ([...document.querySelectorAll('#toast-container li:not([data-state="deleting"])')] as HTMLLIElement[]).reverse();
+    cards.forEach((card, index) => {
         const nextCard = card.nextElementSibling as HTMLLIElement;
-        const offset = nextCard ? -(getOffset(nextCard) + nextCard.offsetHeight + OFFSET) : 0;
-        (card as HTMLLIElement).style.setProperty('--offset', `${offset}px`);
+        const offset = nextCard ? getOffset(nextCard) + nextCard.offsetHeight + OFFSET : 0;
+        card.style.setProperty('--offset', `${offset}px`);
+        if (index + 1 > MAX_COUNT) {
+            card.style.setProperty('--opacity', '0');
+        }
     });
 }
 

@@ -11,6 +11,7 @@
 
     --offset: 0px;
     --opacity: 1;
+    --lift: -1;
 }
 
 #toast-container li {
@@ -26,9 +27,9 @@
     border-radius: 10px;
     margin: 10px 0;
     border: 1px solid hsl(0, 0%, 93%);
-    transform: translateY(var(--offset));
+    transform: translateY(calc(var(--lift) * var(--offset)));
     opacity: var(--opacity);
-    transition: transform .4s, opacity .2s, height .4s, box-shadow .2s;
+    transition: transform .4s, opacity .4s, height .4s, box-shadow .2s;
 }
 
 #toast-container>li>.icon {
