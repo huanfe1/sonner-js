@@ -10,10 +10,18 @@ type Options = {
 
 function getCardContainer() {
     if (document.getElementById(CONTAINER_ID)) return document.getElementById(CONTAINER_ID)!;
+
     const container = document.createElement('div');
     container.id = CONTAINER_ID;
 
-    const observer = new MutationObserver(assignOffset);
+    container.setAttribute('data-expand', 'false');
+    container.addEventListener('mouseenter', () => {
+        container.setAttribute('data-expand', 'true');
+        assignOffset(container);
+    });
+    container.addEventListener('mouseleave', () => container.setAttribute('data-expand', 'false'));
+
+    const observer = new MutationObserver(() => assignOffset(container));
     observer.observe(container, { childList: true });
 
     document.body.appendChild(container);
@@ -63,16 +71,22 @@ export function createCard(message: string, { description, icon }: Options = {})
     return card;
 }
 
-function assignOffset() {
+function assignOffset(container: HTMLElement) {
     const cards = ([...document.querySelectorAll('#toast-container li:not([data-state="deleting"])')] as HTMLLIElement[]).reverse();
     cards.forEach((card, index) => {
         const nextCard = card.nextElementSibling as HTMLLIElement;
         const offset = nextCard ? getOffset(nextCard) + nextCard.offsetHeight + OFFSET : 0;
         card.style.setProperty('--offset', `${offset}px`);
+
+        card.setAttribute('data-front', index === 0 ? 'true' : 'false');
+        card.style.setProperty('--index', index.toString());
+
+        // limit display toast count
         if (index + 1 > MAX_COUNT) {
             card.style.setProperty('--opacity', '0');
         }
     });
+    container.style.setProperty('--front-height', `${cards[0]?.offsetHeight}px`);
 }
 
 function getOffset(el: Element): number {
