@@ -1,7 +1,7 @@
 const CONTAINER_ID = 'toast-container';
 const DURATION = 3000;
-const OFFSET = 10;
 const MAX_COUNT = 5;
+const GAP = 13;
 
 type Options = {
     description?: string;
@@ -13,6 +13,8 @@ function getCardContainer() {
 
     const container = document.createElement('div');
     container.id = CONTAINER_ID;
+
+    container.style.setProperty('--gap', `${GAP}px`);
 
     container.setAttribute('data-expand', 'false');
     container.addEventListener('mouseenter', () => {
@@ -75,7 +77,7 @@ function assignOffset(container: HTMLElement) {
     const cards = ([...document.querySelectorAll('#toast-container li:not([data-state="deleting"])')] as HTMLLIElement[]).reverse();
     cards.forEach((card, index) => {
         const nextCard = card.nextElementSibling as HTMLLIElement;
-        const offset = nextCard ? getOffset(nextCard) + nextCard.offsetHeight + OFFSET : 0;
+        const offset = nextCard ? getOffset(nextCard) + nextCard.offsetHeight + GAP : 0;
         card.style.setProperty('--offset', `${offset}px`);
 
         card.setAttribute('data-front', index === 0 ? 'true' : 'false');

@@ -1,0 +1,77 @@
+#toast-container {
+    position: fixed;
+    top: 0;
+    right: 24px;
+    bottom: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 15px;
+    list-style: none;
+    user-select: none;
+
+    --opacity: 1;
+    --lift: -1;
+}
+
+#toast-container li {
+    display: flex;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    align-items: center;
+    transform: translateY(calc(var(--lift) * var(--offset, 0px)));
+    opacity: var(--opacity);
+    transition:
+        transform 0.4s,
+        opacity 0.2s,
+        height 0.4s;
+    box-sizing: border-box;
+    margin: 10px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid hsl(0, 0%, 93%);
+    border-radius: 10px;
+    background-color: white;
+    padding: 15px;
+    width: 350px;
+}
+
+#toast-container li::after {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    height: calc(var(--gap) + 1px);
+    content: '';
+}
+
+#toast-container > li > .icon {
+    display: flex;
+    margin-right: 7px;
+}
+
+#toast-container li .title {
+    color: #222;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+#toast-container li .desc {
+    margin-top: 5px;
+    color: #888;
+    font-size: 12px;
+}
+
+#toast-container[data-expand='false'] li {
+    &:not(:nth-last-child(-n + 2)) > div {
+        opacity: 0;
+    }
+}
+
+#toast-container[data-expand='false'] li[data-front='false'] {
+    transform: scale(calc(1 - var(--index) * 0.05)) translateY(calc(var(--lift) * var(--gap) * var(--index)));
+    height: var(--front-height);
+}
+
+#toast-container[data-expand='false'] li[data-front='false'][data-state='deleting'] {
+    transform: scale(calc(1 - var(--index) * 0.05));
+}

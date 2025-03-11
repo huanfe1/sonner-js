@@ -6,7 +6,8 @@
     "type": "module",
     "scripts": {
         "dev": "rollup -c -w",
-        "build": "rollup -c"
+        "build": "rollup -c",
+        "format": "prettier --write ."
     },
     "homepage": "https://github.com/huanfei/sonner-js",
     "bugs": "https://github.com/huanfei/sonner-js/issues",
@@ -20,8 +21,12 @@
     "devDependencies": {
         "@rollup/plugin-commonjs": "^28.0.3",
         "@rollup/plugin-typescript": "^12.1.2",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "prettier": "^3.5.3",
+        "prettier-plugin-css-order": "^2.1.2",
         "rollup": "^4.35.0",
         "rollup-plugin-postcss": "^4.0.2",
+        "sass": "^1.85.1",
         "tslib": "^2.8.1"
     }
 }

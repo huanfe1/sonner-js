@@ -1,6 +1,7 @@
-import './index.css';
-import { successIcon, errorIcon, infoIcon, warningIcon } from './assets';
+import { errorIcon, infoIcon, successIcon, warningIcon } from './assets';
 import { createCard } from './card';
+
+import './style.scss';
 
 const createHandler = (type: string) => {
     const icon = document.createElement('span');
