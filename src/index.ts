@@ -1,33 +1,20 @@
 import { errorIcon, infoIcon, successIcon, warningIcon } from './assets';
-import { createCard } from './card';
+import { Options, createCard } from './card';
 
 import './style.scss';
 
-const createHandler = (type: string) => {
-    const icon = document.createElement('span');
-    icon.className = 'icon';
-    if (type === 'success') {
-        icon.innerHTML = successIcon;
-        return (message: string, { description }: { description?: string } = {}) => createCard(message, { description, icon });
-    } else if (type === 'error') {
-        icon.innerHTML = errorIcon;
-        return (message: string, { description }: { description?: string } = {}) => createCard(message, { description, icon });
-    } else if (type === 'info') {
-        icon.innerHTML = infoIcon;
-        return (message: string, { description }: { description?: string } = {}) => createCard(message, { description, icon });
-    } else if (type === 'warning') {
-        icon.innerHTML = warningIcon;
-        return (message: string, { description }: { description?: string } = {}) => createCard(message, { description, icon });
-    }
+const icons = { success: successIcon, error: errorIcon, info: infoIcon, warning: warningIcon };
+
+const showToast = (type: keyof typeof icons | null, message: string, options: Options = {}) => {
+    const icon = type ? Object.assign(document.createElement('span'), { className: 'icon', innerHTML: icons[type] }) : undefined;
+    createCard(message, { ...options, icon });
 };
 
-const toast = (message: string, { description }: { description?: string } = {}) => {
-    createCard(message, { description });
-};
-
-toast.success = createHandler('success');
-toast.error = createHandler('error');
-toast.info = createHandler('info');
-toast.warning = createHandler('warning');
+const toast = Object.assign(showToast.bind(null, null), {
+    success: showToast.bind(null, 'success'),
+    error: showToast.bind(null, 'error'),
+    info: showToast.bind(null, 'info'),
+    warning: showToast.bind(null, 'warning'),
+});
 
 export default toast;

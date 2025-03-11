@@ -1,11 +1,11 @@
 const CONTAINER_ID = 'toast-container';
-const DURATION = 3000;
 const MAX_COUNT = 5;
 const GAP = 13;
 
-type Options = {
+export type Options = {
     description?: string;
     icon?: HTMLElement;
+    duration?: number;
 };
 
 function getCardContainer() {
@@ -30,12 +30,12 @@ function getCardContainer() {
     return container;
 }
 
-export function createCard(message: string, { description, icon }: Options = {}) {
+export function createCard(message: string, options: Options = {}) {
     const container = getCardContainer();
     const card = document.createElement('li');
 
-    if (icon) {
-        card.appendChild(icon.cloneNode(true));
+    if (options.icon) {
+        card.appendChild(options.icon.cloneNode(true));
     }
 
     const textContainer = document.createElement('div');
@@ -47,9 +47,9 @@ export function createCard(message: string, { description, icon }: Options = {})
     title.textContent = message;
     textContainer.appendChild(title);
 
-    if (description) {
+    if (options.description) {
         const desc = document.createElement('div');
-        desc.textContent = description;
+        desc.textContent = options.description;
         desc.className = 'desc';
         textContainer.appendChild(desc);
     }
@@ -68,13 +68,13 @@ export function createCard(message: string, { description, icon }: Options = {})
         card.style.setProperty('--offset', `${getOffset(card) - card.offsetHeight}px`);
         card.style.setProperty('--opacity', '0');
         card.addEventListener('transitionend', () => container.removeChild(card), { once: true });
-    }, DURATION);
+    }, options.duration ?? 3000);
 
     return card;
 }
 
 function assignOffset(container: HTMLElement) {
-    const cards = ([...document.querySelectorAll('#toast-container li:not([data-state="deleting"])')] as HTMLLIElement[]).reverse();
+    const cards = [...container.querySelectorAll('li:not([data-state="deleting"])')].reverse() as HTMLLIElement[];
     cards.forEach((card, index) => {
         const nextCard = card.nextElementSibling as HTMLLIElement;
         const offset = nextCard ? getOffset(nextCard) + nextCard.offsetHeight + GAP : 0;
