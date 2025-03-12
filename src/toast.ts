@@ -1,21 +1,15 @@
-import { ConfigType } from './config';
+import { closeIcon } from './assets';
+import { config } from './config';
 import { getOffset, getToaster } from './toaster';
-
-export type OptionsType = {
-    description?: string;
-    icon?: HTMLElement;
-    duration?: number;
-    position?: ConfigType['position'];
-    id?: number | string;
-};
+import { ToastType } from './types';
 
 let idNumber = 0;
 
 const toastTimers = new Map<number | string, number>();
 const toastMap = new Map<number | string, HTMLElement>();
 
-export function addToast(message: string, options: OptionsType) {
-    const toaster = getToaster(options.position);
+export function addToast(message: string, options: ToastType) {
+    const toaster = getToaster(options.position || config.position);
     let toast: HTMLElement;
 
     if (options.id && toastMap.has(options.id)) {
@@ -36,6 +30,15 @@ export function addToast(message: string, options: OptionsType) {
     }
 
     toast.setAttribute('data-sonner-toast', '');
+
+    // add close button
+    if (options.closeButton || config.closeButton) {
+        const close = document.createElement('span');
+        close.setAttribute('data-close-button', '');
+        close.innerHTML = closeIcon;
+        close.addEventListener('click', () => dismissToast(options.id), { once: true });
+        toast.appendChild(close);
+    }
 
     if (options.icon) {
         toast.appendChild(options.icon.cloneNode(true));
@@ -64,24 +67,31 @@ export function addToast(message: string, options: OptionsType) {
     });
 
     if (options.duration !== 0) {
-        const timeoutId = setTimeout(() => {
-            toast.setAttribute('data-state', 'deleting');
-            toast.style.setProperty('--offset', `${getOffset(toast) - toast.offsetHeight}px`);
-            toast.style.setProperty('--opacity', '0');
-            toast.addEventListener(
-                'transitionend',
-                () => {
-                    toaster.removeChild(toast);
-                    toastMap.delete(options.id!);
-                },
-                { once: true },
-            );
-
-            toastTimers.delete(options.id!);
-        }, options.duration || 3000);
-
+        const timeoutId = setTimeout(() => dismissToast(options.id), options.duration || 3000);
         toastTimers.set(options.id!, timeoutId);
     }
 
     return options.id;
+}
+
+export function dismissToast(id?: ToastType['id']) {
+    if (toastMap.size === 0) return;
+
+    if (id === undefined) {
+        toastMap.forEach((_, index) => dismissToast(index));
+        return;
+    }
+
+    const toast = toastMap.get(id);
+    if (!toast) return;
+
+    toast.setAttribute('data-state', 'deleting');
+    toast.style.setProperty('--offset', `${getOffset(toast) - toast.offsetHeight}px`);
+    toast.style.setProperty('--opacity', '0');
+    toast.addEventListener('transitionend', () => {
+        toast.remove();
+        toastMap.delete(id);
+    });
+
+    toastTimers.delete(id);
 }

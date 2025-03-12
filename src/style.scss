@@ -1,5 +1,19 @@
 [data-soner-toaster] {
     --width: 356px;
+    --gray1: hsl(0, 0%, 99%);
+    --gray2: hsl(0, 0%, 97.3%);
+    --gray3: hsl(0, 0%, 95.1%);
+    --gray4: hsl(0, 0%, 93%);
+    --gray5: hsl(0, 0%, 90.9%);
+    --gray6: hsl(0, 0%, 88.7%);
+    --gray7: hsl(0, 0%, 85.8%);
+    --gray8: hsl(0, 0%, 78%);
+    --gray9: hsl(0, 0%, 56.1%);
+    --gray10: hsl(0, 0%, 52.3%);
+    --gray11: hsl(0, 0%, 43.5%);
+    --gray12: hsl(0, 0%, 9%);
+    --border-radius: 8px;
+    --normal-bg: #fff;
 
     position: fixed;
     z-index: 999999;
@@ -117,4 +131,24 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+[data-sonner-toast] [data-close-button] {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-35%, -35%);
+    z-index: 1;
+    cursor: pointer;
+    border: 1px solid var(--gray4);
+    border-radius: 50%;
+    background: var(--normal-bg);
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    color: var(--gray12);
 }

@@ -1,4 +1,5 @@
-import { type ConfigType, getConfig } from './config';
+import { config } from './config';
+import { ToasterType } from './types';
 
 import './style.scss';
 
@@ -11,11 +12,10 @@ function getContainer(): HTMLElement {
     return container;
 }
 
-export function getToaster(position?: ConfigType['position']) {
-    const config = getConfig();
+export function getToaster(position: ToasterType['position']) {
     const container = getContainer();
 
-    const el = container.querySelector(`ol[data-position="${position || config.position}"]`);
+    const el = container.querySelector(`ol[data-position="${position}"]`);
     if (el) return el;
 
     const toaster = document.createElement('ol');
@@ -53,7 +53,7 @@ export function getToaster(position?: ConfigType['position']) {
 }
 
 function assignOffset(container: HTMLElement) {
-    const { visibleToasts, gap } = getConfig();
+    const { visibleToasts, gap } = config;
     const cards = [...container.querySelectorAll('li:not([data-state="deleting"])')].reverse() as HTMLLIElement[];
     cards.forEach((card, index) => {
         const nextCard = card.nextElementSibling as HTMLLIElement;

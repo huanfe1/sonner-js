@@ -1,15 +1,6 @@
-export type ConfigType = {
-    theme?: 'light' | 'dark';
-    richColors?: boolean;
-    expand?: boolean;
-    position?: 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center';
-    closeButton?: boolean;
-    visibleToasts?: number;
-    gap?: number;
-    offset?: number;
-};
+import { ToasterType } from './types';
 
-const defaultConfig = {
+const defaultConfig: Required<ToasterType> = {
     theme: 'light',
     richColors: false,
     position: 'bottom-right',
@@ -20,12 +11,8 @@ const defaultConfig = {
     offset: 24,
 };
 
-let config = defaultConfig;
+export let config = { ...defaultConfig };
 
-export function setConfig(newConfig: ConfigType) {
-    config = { ...defaultConfig, ...newConfig };
-}
-
-export function getConfig() {
-    return config;
+export function setConfig(userConfig: ToasterType) {
+    config = { ...defaultConfig, ...userConfig };
 }
