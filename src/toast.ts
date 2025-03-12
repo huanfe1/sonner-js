@@ -12,31 +12,32 @@ export function addToast(message: string, options: ToastType) {
     const toaster = getToaster(options.position || config.position);
     let toast: HTMLElement;
 
-    if (options.id && toastMap.has(options.id)) {
-        toast = toastMap.get(options.id)!;
+    const id = options.id || idNumber++;
+    const duration = options.duration || 3000;
+
+    // Reuse existing toast if provided id
+    if (options.id && toastMap.has(id)) {
+        toast = toastMap.get(id)!;
+
         toast.innerHTML = '';
 
-        if (toastTimers.has(options.id)) {
-            clearTimeout(toastTimers.get(options.id)!);
-            toastTimers.delete(options.id);
+        if (toastTimers.has(id)) {
+            clearTimeout(toastTimers.get(id));
+            toastTimers.delete(id);
         }
     } else {
         toast = document.createElement('li');
+        toast.setAttribute('data-sonner-toast', '');
 
-        options.id ||= idNumber++;
-        toastMap.set(options.id, toast);
-
-        toast.style.transform = 'translateY(calc(var(--lift) * -120%))';
+        toast.style.setProperty('--offset', '-120%');
     }
-
-    toast.setAttribute('data-sonner-toast', '');
 
     // add close button
     if (options.closeButton || config.closeButton) {
         const close = document.createElement('span');
         close.setAttribute('data-close-button', '');
         close.innerHTML = closeIcon;
-        close.addEventListener('click', () => dismissToast(options.id), { once: true });
+        close.addEventListener('click', () => dismissToast(id), { once: true });
         toast.appendChild(close);
     }
 
@@ -46,45 +47,40 @@ export function addToast(message: string, options: ToastType) {
 
     // pause all timers when hover toaster
     toaster.addEventListener('mouseenter', () => {
-        toastTimers.forEach(timeoutId => clearTimeout(timeoutId));
-        console.log(toastTimers);
+        toastTimers.forEach(timeId => clearTimeout(timeId));
     });
 
     toaster.addEventListener('mouseleave', () => {
-        toastTimers.forEach((_, id) => {
-            const toast = toastMap.get(id);
-            if (toast && !toast.hasAttribute('data-state')) {
-                const timeoutId = setTimeout(() => dismissToast(id), options.duration || 3000);
-                toastTimers.set(id, timeoutId);
-            }
+        toastTimers.forEach((_, index) => {
+            setTimeout(dismissToast, duration, index);
         });
     });
 
-    const textContainer = document.createElement('div');
-    textContainer.setAttribute('data-content', '');
-    toast.appendChild(textContainer);
+    // add content
+    const content = document.createElement('div');
+    content.setAttribute('data-content', '');
+    toast.appendChild(content);
 
     const title = document.createElement('div');
     title.setAttribute('data-title', '');
     title.textContent = message;
-    textContainer.appendChild(title);
+    content.appendChild(title);
 
     if (options.description) {
         const desc = document.createElement('div');
         desc.textContent = options.description;
         desc.setAttribute('data-description', '');
-        textContainer.appendChild(desc);
+        content.appendChild(desc);
     }
 
-    toaster.appendChild(toast);
-
-    window.requestAnimationFrame(() => {
-        toast.style.transform = '';
-    });
-
     if (options.duration !== 0) {
-        const timeoutId = setTimeout(() => dismissToast(options.id), options.duration || 3000);
-        toastTimers.set(options.id, timeoutId);
+        const timeId = setTimeout(dismissToast, duration, id);
+        toastTimers.set(id, timeId);
+    }
+
+    if (!(options.id && toastMap.has(id))) {
+        toaster.appendChild(toast);
+        toastMap.set(id, toast);
     }
 
     return options.id;
@@ -104,7 +100,7 @@ export function dismissToast(id?: ToastType['id']) {
     toast.setAttribute('data-state', 'deleting');
     toast.style.setProperty('--offset', `${getOffset(toast) - toast.offsetHeight}px`);
     toast.style.setProperty('--opacity', '0');
-    toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+    toast.addEventListener('transitionend', () => window.requestAnimationFrame(() => toast.remove()), { once: true });
 
     toastMap.delete(id);
     toastTimers.delete(id);

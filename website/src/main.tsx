@@ -1,10 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+
+import SonnerJs from './sonner-js.tsx';
+import Sonner from './sonner.tsx';
+
+import './index.css';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <StrictMode>
+        <div className="container">
+            {/* <SonnerJs /> */}
+            <Sonner />
+        </div>
+    </StrictMode>,
+);

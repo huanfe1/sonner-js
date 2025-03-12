@@ -3,7 +3,7 @@ import { ToasterType } from './types';
 const defaultConfig: Required<ToasterType> = {
     theme: 'light',
     richColors: false,
-    position: 'bottom-right',
+    position: 'top-right',
     expand: false,
     closeButton: false,
     visibleToasts: 3,
