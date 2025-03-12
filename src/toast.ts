@@ -44,6 +44,22 @@ export function addToast(message: string, options: ToastType) {
         toast.appendChild(options.icon.cloneNode(true));
     }
 
+    // pause all timers when hover toaster
+    toaster.addEventListener('mouseenter', () => {
+        toastTimers.forEach(timeoutId => clearTimeout(timeoutId));
+        console.log(toastTimers);
+    });
+
+    toaster.addEventListener('mouseleave', () => {
+        toastTimers.forEach((_, id) => {
+            const toast = toastMap.get(id);
+            if (toast && !toast.hasAttribute('data-state')) {
+                const timeoutId = setTimeout(() => dismissToast(id), options.duration || 3000);
+                toastTimers.set(id, timeoutId);
+            }
+        });
+    });
+
     const textContainer = document.createElement('div');
     textContainer.setAttribute('data-content', '');
     toast.appendChild(textContainer);
@@ -68,7 +84,7 @@ export function addToast(message: string, options: ToastType) {
 
     if (options.duration !== 0) {
         const timeoutId = setTimeout(() => dismissToast(options.id), options.duration || 3000);
-        toastTimers.set(options.id!, timeoutId);
+        toastTimers.set(options.id, timeoutId);
     }
 
     return options.id;
@@ -88,10 +104,8 @@ export function dismissToast(id?: ToastType['id']) {
     toast.setAttribute('data-state', 'deleting');
     toast.style.setProperty('--offset', `${getOffset(toast) - toast.offsetHeight}px`);
     toast.style.setProperty('--opacity', '0');
-    toast.addEventListener('transitionend', () => {
-        toast.remove();
-        toastMap.delete(id);
-    });
+    toast.addEventListener('transitionend', () => toast.remove(), { once: true });
 
+    toastMap.delete(id);
     toastTimers.delete(id);
 }
