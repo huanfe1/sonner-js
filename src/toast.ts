@@ -6,12 +6,35 @@ export type OptionsType = {
     icon?: HTMLElement;
     duration?: number;
     position?: ConfigType['position'];
+    id?: number | string;
 };
+
+let idNumber = 0;
+
+const toastTimers = new Map<number | string, number>();
+const toastMap = new Map<number | string, HTMLElement>();
 
 export function addToast(message: string, options: OptionsType) {
     const toaster = getToaster(options.position);
+    let toast: HTMLElement;
 
-    const toast = document.createElement('li');
+    if (options.id && toastMap.has(options.id)) {
+        toast = toastMap.get(options.id)!;
+        toast.innerHTML = '';
+
+        if (toastTimers.has(options.id)) {
+            clearTimeout(toastTimers.get(options.id)!);
+            toastTimers.delete(options.id);
+        }
+    } else {
+        toast = document.createElement('li');
+
+        options.id ||= idNumber++;
+        toastMap.set(options.id, toast);
+
+        toast.style.transform = 'translateY(calc(var(--lift) * -120%))';
+    }
+
     toast.setAttribute('data-sonner-toast', '');
 
     if (options.icon) {
@@ -34,8 +57,6 @@ export function addToast(message: string, options: OptionsType) {
         textContainer.appendChild(desc);
     }
 
-    toast.style.transform = 'translateY(calc(var(--lift) * -120%))';
-
     toaster.appendChild(toast);
 
     window.requestAnimationFrame(() => {
@@ -43,13 +64,24 @@ export function addToast(message: string, options: OptionsType) {
     });
 
     if (options.duration !== 0) {
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             toast.setAttribute('data-state', 'deleting');
             toast.style.setProperty('--offset', `${getOffset(toast) - toast.offsetHeight}px`);
             toast.style.setProperty('--opacity', '0');
-            toast.addEventListener('transitionend', () => toaster.removeChild(toast), { once: true });
+            toast.addEventListener(
+                'transitionend',
+                () => {
+                    toaster.removeChild(toast);
+                    toastMap.delete(options.id!);
+                },
+                { once: true },
+            );
+
+            toastTimers.delete(options.id!);
         }, options.duration || 3000);
+
+        toastTimers.set(options.id!, timeoutId);
     }
 
-    return toast;
+    return options.id;
 }
