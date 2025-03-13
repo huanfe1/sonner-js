@@ -5,7 +5,7 @@ import { ToastType } from './types';
 
 let idNumber = 0;
 
-const toastTimers = new Map<number | string, number>();
+const toastTimers = new Map<number | string, { timeId: number; startTime: number; remainingTime: number }>();
 const toastMap = new Map<number | string, HTMLElement>();
 
 export function addToast(message: string, options: ToastType) {
@@ -22,14 +22,38 @@ export function addToast(message: string, options: ToastType) {
         toast.innerHTML = '';
 
         if (toastTimers.has(id)) {
-            clearTimeout(toastTimers.get(id));
-            toastTimers.delete(id);
+            clearTimeout(toastTimers.get(id)?.timeId);
+            const timeId = setTimeout(dismissToast, duration, id);
+            toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
         }
     } else {
         toast = document.createElement('li');
         toast.setAttribute('data-sonner-toast', '');
 
         toast.style.setProperty('--offset', '-120%');
+
+        // pause all timers when hover toaster
+        toast.addEventListener('mouseenter', () => {
+            toastTimers.forEach(time => {
+                clearTimeout(time.timeId);
+                const now = new Date().getTime();
+                const diff = now - time.startTime;
+                time.remainingTime -= diff;
+            });
+        });
+
+        toast.addEventListener('mouseleave', () => {
+            toastTimers.forEach((time, _id) => {
+                const now = new Date().getTime();
+                time.startTime = now;
+                time.timeId = setTimeout(dismissToast, time.remainingTime, _id);
+            });
+        });
+
+        if (options.duration !== 0) {
+            const timeId = setTimeout(dismissToast, duration, id);
+            toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
+        }
     }
 
     // add close button
@@ -44,17 +68,6 @@ export function addToast(message: string, options: ToastType) {
     if (options.icon) {
         toast.appendChild(options.icon.cloneNode(true));
     }
-
-    // pause all timers when hover toaster
-    toaster.addEventListener('mouseenter', () => {
-        toastTimers.forEach(timeId => clearTimeout(timeId));
-    });
-
-    toaster.addEventListener('mouseleave', () => {
-        toastTimers.forEach((_, index) => {
-            setTimeout(dismissToast, duration, index);
-        });
-    });
 
     // add content
     const content = document.createElement('div');
@@ -71,11 +84,6 @@ export function addToast(message: string, options: ToastType) {
         desc.textContent = options.description;
         desc.setAttribute('data-description', '');
         content.appendChild(desc);
-    }
-
-    if (options.duration !== 0) {
-        const timeId = setTimeout(dismissToast, duration, id);
-        toastTimers.set(id, timeId);
     }
 
     if (!(options.id && toastMap.has(id))) {
