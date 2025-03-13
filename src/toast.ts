@@ -20,11 +20,9 @@ export function addToast(message: string, options: ToastType) {
 
         toast.innerHTML = '';
 
-        if (toastTimers.has(id)) {
-            clearTimeout(toastTimers.get(id)?.timeId);
-            const timeId = setTimeout(dismissToast, duration, id);
-            toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
-        }
+        clearTimeout(toastTimers.get(id)?.timeId);
+        const timeId = setTimeout(dismissToast, duration, id);
+        toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
     } else {
         toast = document.createElement('li');
         toast.setAttribute('data-sonner-toast', '');
