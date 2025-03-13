@@ -26,19 +26,13 @@
 
 <body>
     <script src="./dist/umd/index.js"></script>
-    <script>
-        toast('Event has been created');
-        toast('Event has been created');
-        toast('Event has been created');
-    </script>
+    <!-- <script>
+            toast('Event has been created');
+            toast('Event has been created');
+            toast('Event has been created');
+        </script> -->
     <div class="buttons">
         <button onclick="toast('Event has been created')">default</button>
-        <button
-            onclick="toast('Sonner', {description: 'An opinionated toast component for React.'})">description</button>
-        <button onclick="toast.loading('Loading...', {closeButton: true})">test</button>
-        <button onclick="toast.error('this is a error message', {id:'213'})">error</button>
-        <button onclick="toast.info('this is a info message')">info</button>
-        <button onclick="toast.warning('this is a warning message')">warning</button>
     </div>
 </body>
 

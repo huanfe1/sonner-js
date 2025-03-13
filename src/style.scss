@@ -133,7 +133,8 @@
     }
 }
 
-[data-sonner-toast] [data-close-button] {
+// close-button
+[data-sonner-toast] [data-close-button='true'] {
     display: flex;
     position: absolute;
     top: 0;
@@ -143,6 +144,10 @@
     align-items: center;
     transform: translate(-35%, -35%);
     z-index: 1;
+    transition:
+        opacity 100ms,
+        background 200ms,
+        border-color 200ms;
     cursor: pointer;
     border: 1px solid var(--gray4);
     border-radius: 50%;
@@ -151,4 +156,12 @@
     width: 20px;
     height: 20px;
     color: var(--gray12);
+    &:hover {
+        border-color: var(--gray5);
+        background: var(--gray2);
+    }
+}
+
+[data-sonner-toast] [data-close-button='false'] {
+    display: none;
 }

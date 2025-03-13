@@ -1,12 +1,12 @@
 .container {
-    width: 500px;
-    margin: 100px auto;
     display: flex;
     flex-direction: column;
+    margin: 100px auto;
+    width: 500px;
 }
 
 button {
+    border: none;
     width: 100px;
     height: 30px;
-    border: none;
 }

@@ -14,6 +14,7 @@ export function addToast(message: string, options: ToastType) {
 
     const id = options.id || idNumber++;
     const duration = options.duration || 3000;
+    const closeButton = options.closeButton === undefined ? config.closeButton : options.closeButton;
 
     // Reuse existing toast if provided id
     if (options.id && toastMap.has(id)) {
@@ -57,19 +58,17 @@ export function addToast(message: string, options: ToastType) {
     }
 
     // add close button
-    if (options.closeButton || config.closeButton) {
-        const close = document.createElement('span');
-        close.setAttribute('data-close-button', '');
-        close.innerHTML = closeIcon;
-        close.addEventListener('click', () => dismissToast(id), { once: true });
-        toast.appendChild(close);
-    }
+    const close = document.createElement('span');
+    close.setAttribute('data-close-button', closeButton.toString());
+    close.innerHTML = closeIcon;
+    close.addEventListener('click', () => dismissToast(id), { once: true });
+    toast.appendChild(close);
 
+    // add content
     if (options.icon) {
         toast.appendChild(options.icon.cloneNode(true));
     }
 
-    // add content
     const content = document.createElement('div');
     content.setAttribute('data-content', '');
     toast.appendChild(content);
