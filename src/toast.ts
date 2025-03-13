@@ -3,7 +3,7 @@ import { config } from './config';
 import { getOffset, getToaster } from './toaster';
 import { ToastType } from './types';
 
-let idNumber = 0;
+let idNumber = 1;
 
 const toastTimers = new Map<number | string, { timeId: number; startTime: number; remainingTime: number }>();
 const toastMap = new Map<number | string, HTMLElement>();
@@ -13,6 +13,7 @@ export function addToast(message: string, options: ToastType) {
     let toast: HTMLElement;
 
     const id = options.id || idNumber++;
+
     const duration = options.duration || 3000;
     const closeButton = options.closeButton === undefined ? config.closeButton : options.closeButton;
 
@@ -90,7 +91,7 @@ export function addToast(message: string, options: ToastType) {
         toastMap.set(id, toast);
     }
 
-    return options.id;
+    return id;
 }
 
 export function dismissToast(id?: ToastType['id']) {
