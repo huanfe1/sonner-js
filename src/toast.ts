@@ -7,12 +7,14 @@ const toastTimers = new Map<number | string, { timeId: number; startTime: number
 const toastMap = new Map<number | string, HTMLElement>();
 
 export function addToast(message: string, options: ToastType) {
-    const toaster = getToaster(options.position || config.position);
     let toast: HTMLElement;
 
     const id = options.id || crypto.randomUUID();
     const duration = options.duration || 3000;
     const closeButton = options.closeButton === undefined ? config.closeButton : options.closeButton;
+    const position = options.position || config.position;
+
+    const toaster = getToaster(position);
 
     // Reuse existing toast if provided id
     if (options.id && toastMap.has(id)) {

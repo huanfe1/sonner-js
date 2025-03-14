@@ -60,6 +60,7 @@
     background-color: white;
     padding: 15px;
     width: var(--width);
+    height: var(--init-height);
 
     &:after {
         position: absolute;
@@ -79,7 +80,7 @@
         [data-title] {
             color: #222;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
         }
         [data-description] {
             margin-top: 5px;

@@ -28,10 +28,11 @@ export function getToaster(position: ToasterType['position']) {
     toaster.style.setProperty('--offset', `${config.offset}px`);
 
     const observer = new MutationObserver(() => {
-        assignOffset(toaster);
         if (toaster.querySelectorAll('*').length === 0) {
             observer.disconnect();
             container.removeChild(toaster);
+        } else {
+            assignOffset(toaster);
         }
     });
     observer.observe(toaster, { childList: true });
@@ -40,7 +41,7 @@ export function getToaster(position: ToasterType['position']) {
     toaster.addEventListener('mouseenter', () => {
         if (toaster.getAttribute('data-expand') === 'true') return;
         toaster.setAttribute('data-expand', 'true');
-        assignOffset(toaster);
+        // assignOffset(toaster);
         const exit = () => {
             toaster.setAttribute('data-expand', 'false');
             toaster.removeEventListener('mouseleave', exit);
@@ -54,26 +55,37 @@ export function getToaster(position: ToasterType['position']) {
 
 function assignOffset(container: HTMLElement) {
     const { visibleToasts, gap } = config;
-    const cards = [...container.querySelectorAll('li:not([data-state="deleting"])')].reverse() as HTMLLIElement[];
-    cards.forEach((card, index) => {
-        const nextCard = card.nextElementSibling as HTMLLIElement;
-        const offset = nextCard ? getOffset(nextCard) + nextCard.offsetHeight + gap : 0;
-        card.style.setProperty('--offset', `${offset}px`);
+    const toasts = [...container.querySelectorAll('li:not([data-state="deleting"])')].reverse() as HTMLLIElement[];
+    if (toasts.length === 0) return;
 
-        card.style.setProperty('--index', index.toString());
+    const frontToast = toasts[0];
+    if (!getPropertyValue(frontToast, 'init-height')) frontToast.style.setProperty('--init-height', `${frontToast.offsetHeight}px`);
 
-        // limit display toast count
-        if (index + 1 > visibleToasts) {
-            card.style.setProperty('--opacity', '0');
-        } else {
-            card.style.setProperty('--opacity', '1');
-        }
+    window.requestAnimationFrame(() => {
+        toasts.forEach((toast, index) => {
+            const nextCard = toast.nextElementSibling as HTMLLIElement;
+            const offset = nextCard ? parseFloat(getPropertyValue(nextCard, 'offset')) + parseFloat(getPropertyValue(nextCard, 'init-height')) + gap : 0;
+
+            toast.style.setProperty('--offset', `${offset}px`);
+            toast.style.setProperty('--index', index.toString());
+
+            // limit display toast count
+            if (index + 1 > visibleToasts) {
+                toast.style.setProperty('--opacity', '0');
+            } else {
+                toast.style.setProperty('--opacity', '1');
+            }
+        });
     });
-    container.style.setProperty('--front-height', `${cards[0]?.offsetHeight}px`);
+    container.style.setProperty('--front-height', `${toasts[0]?.offsetHeight}px`);
 }
 
 export function getOffset(el: Element): number {
     const offset = getComputedStyle(el).getPropertyValue('--offset');
     if (offset === undefined || offset.match(/%/)) return 0;
     return Math.abs(Number(offset.replace('px', '')));
+}
+
+function getPropertyValue(el: Element, key: string) {
+    return getComputedStyle(el).getPropertyValue(`--${key}`);
 }
