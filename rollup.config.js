@@ -10,7 +10,7 @@ export default defineConfig([
             format: 'esm',
             sourcemap: true,
         },
-        plugins: [typescript({ tsconfig: './tsconfig.json' }), postcss()],
+        plugins: [typescript({ tsconfig: './tsconfig.json' }), postcss({ use: { sass: { silenceDeprecations: ['legacy-js-api'] } } })],
     },
     {
         input: 'src/index.ts',
@@ -20,6 +20,6 @@ export default defineConfig([
             file: './dist/umd/index.js',
             sourcemap: true,
         },
-        plugins: [typescript({ tsconfig: false, noCheck: true }), postcss()],
+        plugins: [typescript({ tsconfig: false, noCheck: true }), postcss({ use: { sass: { silenceDeprecations: ['legacy-js-api'] } } })],
     },
 ]);
