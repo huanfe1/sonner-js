@@ -1,4 +1,26 @@
-[data-soner-toaster] {
+[data-sonner-toaster][data-sonner-theme='light'] {
+    --normal-bg: #fff;
+    --normal-border: var(--gray4);
+    --normal-text: var(--gray12);
+
+    --success-bg: hsl(143, 85%, 96%);
+    --success-border: hsl(145, 92%, 87%);
+    --success-text: hsl(140, 100%, 27%);
+
+    --info-bg: hsl(208, 100%, 97%);
+    --info-border: hsl(221, 91%, 93%);
+    --info-text: hsl(210, 92%, 45%);
+
+    --warning-bg: hsl(49, 100%, 97%);
+    --warning-border: hsl(49, 91%, 84%);
+    --warning-text: hsl(31, 92%, 45%);
+
+    --error-bg: hsl(359, 100%, 97%);
+    --error-border: hsl(359, 100%, 94%);
+    --error-text: hsl(360, 100%, 45%);
+}
+
+[data-sonner-toaster] {
     --width: 356px;
     --gray1: hsl(0, 0%, 99%);
     --gray2: hsl(0, 0%, 97.3%);
@@ -91,10 +113,28 @@
             font-size: 12px;
         }
     }
+
+    [data-button] {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        cursor: pointer;
+        margin-left: auto;
+        outline: 0;
+        border: none;
+        border-radius: 4px;
+        background: var(--normal-text);
+        padding-right: 8px;
+        padding-left: 8px;
+        height: 24px;
+        color: var(--normal-bg);
+        font-weight: 500;
+        font-size: 12px;
+    }
 }
 
 // position
-[data-soner-toaster] {
+[data-sonner-toaster] {
     &[data-position*='top'] {
         --lift: 1;
         top: var(--offset);

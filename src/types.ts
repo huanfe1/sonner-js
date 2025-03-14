@@ -1,6 +1,8 @@
+export type Position = 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center';
+
 export type CommonType = {
     richColors?: boolean;
-    position?: 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center';
+    position?: Position;
     closeButton?: boolean;
 };
 
@@ -13,17 +15,20 @@ export type ToasterType = {
 } & CommonType;
 
 export type ToastType = {
-    description?: string;
-    icon?: HTMLElement;
-    duration?: number;
     id?: number | string;
+    title: string;
+    description?: string;
+    duration?: number;
+    type?: 'success' | 'error' | 'info' | 'warning' | 'loading';
+    action?: {
+        label: string;
+        onClick: (event: MouseEvent) => void;
+    };
 } & CommonType;
 
 export type PromiseT<Data = any> = Promise<Data> | (() => Promise<Data>);
 
-export type ExternalToast = Omit<ToastType, 'id' | 'type' | 'title' | 'jsx' | 'delete' | 'promise'> & {
-    id?: number | string;
-};
+export type ExternalToast = Omit<ToastType, 'type' | 'title' | 'jsx' | 'delete' | 'promise'>;
 
 export interface PromiseIExtendedResult extends ExternalToast {
     message: string;

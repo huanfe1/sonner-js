@@ -1,12 +1,15 @@
 import { closeIcon } from './assets';
+import { errorIcon, infoIcon, loadingIcon, successIcon, warningIcon } from './assets';
 import { config } from './config';
 import { getOffset, getToaster } from './toaster';
 import { ToastType } from './types';
 
+const icons = { success: successIcon, error: errorIcon, info: infoIcon, warning: warningIcon, loading: loadingIcon };
+
 const toastTimers = new Map<number | string, { timeId: number; startTime: number; remainingTime: number }>();
 const toastMap = new Map<number | string, HTMLElement>();
 
-export function addToast(message: string, options: ToastType) {
+export function addToast(options: ToastType) {
     let toast: HTMLElement;
 
     const id = options.id || crypto.randomUUID();
@@ -63,8 +66,11 @@ export function addToast(message: string, options: ToastType) {
     toast.appendChild(close);
 
     // add content
-    if (options.icon) {
-        toast.appendChild(options.icon.cloneNode(true));
+    if (options.type) {
+        const icon = document.createElement('span');
+        icon.innerHTML = icons[options.type];
+        icon.setAttribute('data-icon', '');
+        toast.appendChild(icon);
     }
 
     const content = document.createElement('div');
@@ -73,7 +79,7 @@ export function addToast(message: string, options: ToastType) {
 
     const title = document.createElement('div');
     title.setAttribute('data-title', '');
-    title.textContent = message;
+    title.innerHTML = options.title;
     content.appendChild(title);
 
     if (options.description) {
@@ -81,6 +87,17 @@ export function addToast(message: string, options: ToastType) {
         desc.textContent = options.description;
         desc.setAttribute('data-description', '');
         content.appendChild(desc);
+    }
+
+    if (options.action) {
+        const button = document.createElement('span');
+        button.setAttribute('data-button', '');
+        button.textContent = options.action.label;
+        button.addEventListener('click', e => {
+            options.action?.onClick(e);
+            dismissToast(id);
+        });
+        toast.appendChild(button);
     }
 
     if (!(options.id && toastMap.has(id))) {

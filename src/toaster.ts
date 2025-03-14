@@ -19,10 +19,11 @@ export function getToaster(position: ToasterType['position']) {
     if (el) return el;
 
     const toaster = document.createElement('ol');
-    toaster.setAttribute('data-soner-toaster', '');
+    toaster.setAttribute('data-sonner-toaster', '');
 
     toaster.setAttribute('data-position', position || config.position);
     toaster.setAttribute('data-expand', config.expand.toString());
+    toaster.setAttribute('data-sonner-theme', config.theme);
 
     toaster.style.setProperty('--gap', `${config.gap}px`);
     toaster.style.setProperty('--offset', `${config.offset}px`);
