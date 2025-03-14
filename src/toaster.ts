@@ -3,13 +3,13 @@ import { ToasterType } from './types';
 
 import './style.scss';
 
-let container: HTMLElement | null = null;
-
 function getContainer(): HTMLElement {
-    if (container) return container;
-    container = document.createElement('div');
-    document.body.appendChild(container);
-    return container;
+    let toasters = document.querySelector('[data-sonner-toasters]') as HTMLElement;
+    if (toasters) return toasters;
+    toasters = document.createElement('div');
+    toasters.setAttribute('data-sonner-toasters', '');
+    document.body.appendChild(toasters);
+    return toasters;
 }
 
 export function getToaster(position: ToasterType['position']) {
@@ -79,6 +79,14 @@ function assignOffset(container: HTMLElement) {
         });
     });
     container.style.setProperty('--front-height', `${toasts[0]?.offsetHeight}px`);
+}
+
+export function updateToaster() {
+    const container = getContainer();
+    container.querySelectorAll('[data-sonner-toaster]').forEach(toaster => {
+        toaster.setAttribute('data-expand', config.expand.toString());
+        toaster.setAttribute('data-sonner-theme', config.theme);
+    });
 }
 
 export function getOffset(el: Element): number {

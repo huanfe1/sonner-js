@@ -1,3 +1,4 @@
+import { updateToaster } from './toaster';
 import { ToasterType } from './types';
 
 const defaultConfig: Required<ToasterType> = {
@@ -15,4 +16,5 @@ export let config = { ...defaultConfig };
 
 export function setConfig(userConfig: ToasterType) {
     config = { ...defaultConfig, ...userConfig };
+    updateToaster();
 }
