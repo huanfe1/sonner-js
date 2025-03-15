@@ -58,8 +58,14 @@ export function addToast(options: ToastType) {
         }
     }
 
+    // richColors
+    if (config.richColors && options.type) {
+        toast.setAttribute('data-rich-colors', '');
+        toast.setAttribute('data-type', options.type);
+    }
+
     // add close button
-    const close = document.createElement('span');
+    const close = document.createElement('button');
     close.setAttribute('data-close-button', closeButton.toString());
     close.innerHTML = closeIcon;
     close.addEventListener('click', () => dismissToast(id), { once: true });

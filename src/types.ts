@@ -1,7 +1,6 @@
 export type Position = 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center';
 
 export type CommonType = {
-    richColors?: boolean;
     position?: Position;
     closeButton?: boolean;
 };
@@ -12,6 +11,7 @@ export type ToasterType = {
     visibleToasts?: number;
     gap?: number;
     offset?: number;
+    richColors?: boolean;
 } & CommonType;
 
 export type ToastType = {
