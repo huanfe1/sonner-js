@@ -1,5 +1,5 @@
 import { setConfig } from './config';
-import { addToast } from './toast';
+import { addToast, dismissToast } from './toast';
 import { ExternalToast, PromiseData, PromiseT } from './types';
 
 import './style.scss';
@@ -31,11 +31,13 @@ const promise = <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<Toa
 };
 
 const toast = (message: string, options?: ExternalToast) => addToast({ title: message, ...options });
+toast.message = (message: string, options?: ExternalToast) => addToast({ title: message, ...options });
 toast.success = (message: string, options?: ExternalToast) => addToast({ type: 'success', title: message, ...options });
 toast.error = (message: string, options?: ExternalToast) => addToast({ type: 'error', title: message, ...options });
 toast.info = (message: string, options?: ExternalToast) => addToast({ type: 'info', title: message, ...options });
 toast.warning = (message: string, options?: ExternalToast) => addToast({ type: 'warning', title: message, ...options });
 toast.loading = (message: string, options?: ExternalToast) => addToast({ type: 'loading', title: message, duration: 0, ...options });
+toast.dismiss = dismissToast;
 toast.promise = promise;
 toast.config = setConfig;
 
