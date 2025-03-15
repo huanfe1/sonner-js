@@ -12,11 +12,11 @@ const toastMap = new Map<number | string, HTMLElement>();
 export function addToast(options: ToastType) {
     let toast: HTMLElement;
 
-    const id = options.id || crypto.randomUUID();
-    const duration = options.duration || 3000;
-    const closeButton = options.closeButton === undefined ? config.closeButton : options.closeButton;
-    const position = options.position || config.position;
-
+    const id = options.id ?? crypto.randomUUID();
+    const duration = options.duration ?? config.toastOptions.duration;
+    const closeButton = options.closeButton ?? config.toastOptions.closeButton;
+    const position = options.position ?? config.toastOptions.position;
+    const richColors = options.richColors ?? config.toastOptions.richColors;
     const toaster = getToaster(position);
 
     // Reuse existing toast if provided id
@@ -52,14 +52,14 @@ export function addToast(options: ToastType) {
             });
         });
 
-        if (options.duration !== 0) {
+        if (duration) {
             const timeId = setTimeout(dismissToast, duration, id);
             toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
         }
     }
 
     // richColors
-    if (config.richColors && options.type) {
+    if (richColors && options.type) {
         toast.setAttribute('data-rich-colors', '');
         toast.setAttribute('data-type', options.type);
     }

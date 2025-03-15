@@ -1,5 +1,5 @@
 import { config } from './config';
-import { ToasterType } from './types';
+import { Position } from './types';
 
 import './style.scss';
 
@@ -12,7 +12,7 @@ function getContainer(): HTMLElement {
     return toasters;
 }
 
-export function getToaster(position: ToasterType['position']) {
+export function getToaster(position: Position) {
     const container = getContainer();
 
     const el = container.querySelector(`ol[data-position="${position}"]`);
@@ -21,7 +21,7 @@ export function getToaster(position: ToasterType['position']) {
     const toaster = document.createElement('ol');
     toaster.setAttribute('data-sonner-toaster', '');
 
-    toaster.setAttribute('data-position', position || config.position);
+    toaster.setAttribute('data-position', position);
     toaster.setAttribute('data-expand', config.expand.toString());
     toaster.setAttribute('data-sonner-theme', config.theme);
 
