@@ -9,7 +9,7 @@ export const Usage = () => {
 
 // ...
 
-toast('My first toast')}`}</CodeBlock>
+toast('My first toast')`}</CodeBlock>
         </div>
     );
 };

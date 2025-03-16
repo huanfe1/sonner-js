@@ -1,6 +1,6 @@
 import NextHead from 'next/head';
 
-const ogImage = 'https://sonner.emilkowal.ski/og.png';
+const ogImage = 'https://sonner-js.huanfei.top/og.png';
 
 const Head = () => (
     <NextHead>
@@ -17,7 +17,7 @@ const Head = () => (
         <meta name="og:image" content={ogImage} />
 
         {/* URL */}
-        <meta name="og:url" content="https://sonner.emilkowal.ski/" />
+        <meta name="og:url" content="https://sonner-js.huanfei.top/" />
 
         {/* General */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

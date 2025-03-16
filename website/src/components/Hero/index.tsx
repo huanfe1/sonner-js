@@ -22,7 +22,7 @@ export const Hero = () => {
                             description: 'An opinionated toast component for React.',
                         });
                     }}
-                    className="px-10 bg-[#EFD81D] text-[#fcfcfc] text-[13px] rounded-lg font-semibold hover:bg-[#dec91e]"
+                    className="px-10 bg-[#ebd528] text-[#fcfcfc] text-[13px] rounded-lg font-semibold hover:bg-[#dec91e]"
                 >
                     Render a toast
                 </button>

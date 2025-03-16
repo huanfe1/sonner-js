@@ -1,13 +1,14 @@
-import React from 'react';
+import { useState } from 'react';
 import toast from 'sonner-js';
 
 import { CodeBlock } from '../CodeBlock';
 
 const positions = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'] as const;
 
-export type Position = (typeof positions)[number];
+type Position = (typeof positions)[number];
 
-export const Position = ({ position: activePosition, setPosition }: { position: Position; setPosition: React.Dispatch<React.SetStateAction<Position>> }) => {
+export const Position = () => {
+    const [activePosition, setPosition] = useState<Position>('bottom-right');
     return (
         <div>
             <h2>Position</h2>
@@ -27,11 +28,7 @@ export const Position = ({ position: activePosition, setPosition }: { position: 
                     </button>
                 ))}
             </div>
-            <CodeBlock>{`toast('Event has been created', { position: "${activePosition}" })
-            
-// or
-
-toast.config({ position: "${activePosition}" })`}</CodeBlock>
+            <CodeBlock>{`toast('Event has been created', { position: "${activePosition}" })`}</CodeBlock>
         </div>
     );
 };

@@ -4,9 +4,9 @@
         "module": "ESNext",
         "moduleResolution": "node",
         "strict": true,
-        "outDir": "dist/esm",
-        "declaration": true,
-        "declarationDir": "./dist/esm"
+        "outDir": "dist",
+        "declaration": false,
+        "esModuleInterop": true
     },
     "include": ["src"]
 }
