@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'sonner-js';
 
-import { CodeBlock } from '../CodeBlock';
+import { CodeBlock } from './CodeBlock';
 
 const positions = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'] as const;
 

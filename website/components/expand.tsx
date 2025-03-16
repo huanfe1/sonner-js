@@ -1,10 +1,10 @@
 // import { toast } from 'sonner';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import toast from 'sonner-js';
 
-import { CodeBlock } from '../CodeBlock';
+import { CodeBlock } from './CodeBlock';
 
-export const ExpandModes = () => {
+export const Expand = () => {
     const [expand, setExpand] = useState(false);
 
     return (

@@ -19,12 +19,13 @@
         "react": "^19.0.0",
         "react-dom": "19.0.0",
         "react-use-measure": "^2.1.1",
-        "sonner-js": "workspace:^",
+        "sonner-js": "workspace:*",
         "typescript": "4.9.5"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.15",
         "eslint": "^9.22.0",
+        "eslint-config-next": "15.2.2",
         "postcss": "^8.4.29",
         "tailwindcss": "^3.3.3"
     }

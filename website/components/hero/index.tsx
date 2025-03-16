@@ -1,4 +1,5 @@
-import Link from 'next/link';
+'use client';
+
 import toast from 'sonner-js';
 
 import styles from './hero.module.css';
@@ -17,7 +18,6 @@ export const Hero = () => {
                 <button
                     data-primary=""
                     onClick={() => {
-                        console.log('123');
                         toast('Sonner', {
                             description: 'An opinionated toast component for React.',
                         });

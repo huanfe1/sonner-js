@@ -1,7 +1,7 @@
 import React from 'react';
 import toast from 'sonner-js';
 
-import { CodeBlock } from '../CodeBlock';
+import { CodeBlock } from './CodeBlock';
 
 const promiseCode = '`${data.name} toast has been added`';
 

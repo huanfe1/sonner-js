@@ -7,8 +7,8 @@ const themes = ['light', 'dark'] as const;
 
 type Theme = (typeof themes)[number];
 
-export default function Theme() {
-    const [theme, setTheme] = useState<Theme>('light');
+export function Theme() {
+    const [theme, setTheme] = useState<Theme>(themes[0]);
     return (
         <div>
             <h2>Theme</h2>

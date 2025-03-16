@@ -1,6 +1,4 @@
 import React from 'react';
-import { useMemo } from 'react';
-// import { toast } from 'sonner';
 import toast from 'sonner-js';
 
 import { CodeBlock } from '../CodeBlock';
