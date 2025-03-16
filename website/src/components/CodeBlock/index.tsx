@@ -101,6 +101,7 @@ export const CodeBlock = ({ children, initialHeight = 0 }: { children: string; i
             {/* @ts-ignore */}
             <Highlight {...defaultProps} theme={theme} code={children} language="jsx">
                 {({ className, tokens, getLineProps, getTokenProps }) => (
+                    // @ts-ignore
                     <motion.pre className={styles.wrapper} animate={{ height: bounds.height || initialHeight }} transition={{ type: 'easeOut', duration: 0.2 }}>
                         <div className={`${className} ${styles.root}`} ref={ref}>
                             <div />

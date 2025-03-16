@@ -75,8 +75,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       sonner-js:
-        specifier: 1.0.1
-        version: 1.0.1
+        specifier: workspace:*
+        version: link:..
       typescript:
         specifier: 4.9.5
         version: 4.9.5
@@ -1515,9 +1515,6 @@ packages:
 
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
-
-  sonner-js@1.0.1:
-    resolution: {integrity: sha512-uy12iF5qCFFlLnzkwi+Ur9YAhI8Le6l9EwueToNwYkKUvQQbuwDGSBs+6MsexC94Kv4D//U/tqXldwgyvRWQ2g==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -2970,8 +2967,6 @@ snapshots:
     dependencies:
       is-arrayish: 0.3.2
     optional: true
-
-  sonner-js@1.0.1: {}
 
   source-map-js@1.2.1: {}
 

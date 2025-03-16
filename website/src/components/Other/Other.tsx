@@ -6,7 +6,7 @@ import toast from 'sonner-js';
 import { CodeBlock } from '../CodeBlock';
 
 export const Other = () => {
-    const allTypes = useMemo(() => [
+    const allTypes = [
         {
             name: 'Rich Colors Success',
             snippet: `toast.success('Event has been created', { richColors: true })`,
@@ -60,7 +60,7 @@ export const Other = () => {
                 });
             },
         },
-    ]);
+    ];
 
     const [activeType, setActiveType] = React.useState(allTypes[0]);
 

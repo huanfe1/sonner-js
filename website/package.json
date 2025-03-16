@@ -19,7 +19,7 @@
         "react": "^19.0.0",
         "react-dom": "19.0.0",
         "react-use-measure": "^2.1.1",
-        "sonner-js": "1.0.1",
+        "sonner-js": "workspace:*",
         "typescript": "4.9.5"
     },
     "devDependencies": {
