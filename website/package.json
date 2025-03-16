@@ -13,17 +13,18 @@
         "@types/react-dom": "19.0.4",
         "clsx": "^2.0.0",
         "copy-to-clipboard": "^3.3.3",
-        "framer-motion": "^9.0.1",
+        "framer-motion": "^12.5.0",
         "next": "15.2.2",
         "prism-react-renderer": "^1.3.5",
         "react": "^19.0.0",
         "react-dom": "19.0.0",
         "react-use-measure": "^2.1.1",
-        "sonner-js": "workspace:*",
+        "sonner-js": "workspace:^",
         "typescript": "4.9.5"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.15",
+        "eslint": "^9.22.0",
         "postcss": "^8.4.29",
         "tailwindcss": "^3.3.3"
     }
