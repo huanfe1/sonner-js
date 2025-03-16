@@ -12,6 +12,19 @@ function getContainer(): HTMLElement {
     return toasters;
 }
 
+export function updateToasterConfig() {
+    const container = getContainer();
+    (container.querySelectorAll('[data-sonner-toaster]') as NodeListOf<HTMLElement>).forEach(toaster => {
+        toaster.setAttribute('data-expand', config.expand.toString());
+        toaster.setAttribute('data-sonner-theme', config.theme);
+        toaster.setAttribute('dir', config.dir);
+
+        toaster.style.setProperty('--gap', `${config.gap}px`);
+        toaster.style.setProperty('--offset', `${config.offset}px`);
+        toaster.style.setProperty('--mobile-offset', `${config.mobileOffset}px`);
+    });
+}
+
 export function getToaster(position: Position) {
     const container = getContainer();
 
@@ -24,9 +37,11 @@ export function getToaster(position: Position) {
     toaster.setAttribute('data-position', position);
     toaster.setAttribute('data-expand', config.expand.toString());
     toaster.setAttribute('data-sonner-theme', config.theme);
+    toaster.setAttribute('dir', config.dir);
 
     toaster.style.setProperty('--gap', `${config.gap}px`);
     toaster.style.setProperty('--offset', `${config.offset}px`);
+    toaster.style.setProperty('--mobile-offset', `${config.mobileOffset}px`);
 
     const observer = new MutationObserver(() => {
         if (toaster.querySelectorAll('*').length === 0) {
@@ -79,14 +94,6 @@ function assignOffset(container: HTMLElement) {
         });
     });
     container.style.setProperty('--front-height', `${toasts[0]?.offsetHeight}px`);
-}
-
-export function updateToaster() {
-    const container = getContainer();
-    container.querySelectorAll('[data-sonner-toaster]').forEach(toaster => {
-        toaster.setAttribute('data-expand', config.expand.toString());
-        toaster.setAttribute('data-sonner-theme', config.theme);
-    });
 }
 
 export function getOffset(el: Element): number {

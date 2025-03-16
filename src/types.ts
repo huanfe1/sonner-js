@@ -7,6 +7,7 @@ export type ToasterType = {
     offset?: number;
     mobileOffset?: number;
     gap?: number;
+    dir?: 'rtl' | 'ltr';
     toastOptions?: ToastOptionsType;
 };
 

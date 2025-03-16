@@ -1,4 +1,4 @@
-import { updateToaster } from './toaster';
+import { updateToasterConfig } from './toaster';
 import { ToastOptionsType, ToasterType } from './types';
 
 const defaultConfig: Omit<Required<ToasterType>, 'toastOptions'> & { toastOptions: Required<ToastOptionsType> } = {
@@ -8,6 +8,7 @@ const defaultConfig: Omit<Required<ToasterType>, 'toastOptions'> & { toastOption
     gap: 14,
     offset: 24,
     mobileOffset: 16,
+    dir: 'ltr',
     toastOptions: {
         position: 'bottom-right',
         closeButton: false,
@@ -20,5 +21,5 @@ export let config = { ...defaultConfig };
 
 export function setConfig(userConfig: ToasterType) {
     config = { ...defaultConfig, ...userConfig, toastOptions: { ...defaultConfig.toastOptions, ...userConfig.toastOptions } };
-    updateToaster();
+    updateToasterConfig();
 }
