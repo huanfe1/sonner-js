@@ -26,7 +26,7 @@ export const Hero = () => {
                 >
                     Render a toast
                 </button>
-                <a className={styles.button} href="https://github.com/emilkowalski/sonner" target="_blank">
+                <a className={styles.button} href="https://github.com/huanfe1/sonner-js" target="_blank">
                     GitHub
                 </a>
             </div>
