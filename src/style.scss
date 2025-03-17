@@ -143,8 +143,13 @@ html[dir='rtl'],
         flex-shrink: 0;
         justify-content: flex-start;
         align-items: center;
+        margin-right: var(--toast-icon-margin-end);
+        margin-left: var(--toast-icon-margin-start);
+        width: 16px;
+        height: 16px;
 
         & > svg {
+            flex-shrink: 0;
             transform-origin: center;
             animation: sonner-fade-in 300ms ease forwards;
         }
@@ -368,6 +373,42 @@ html[dir='rtl'],
     }
 }
 
+// loading Icon
+.sonner-loading-wrapper {
+    --size: 16px;
+    position: absolute;
+    z-index: 10;
+    inset: 0;
+    width: var(--size);
+    height: var(--size);
+
+    & .sonner-spinner {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        width: var(--size);
+        height: var(--size);
+    }
+    & .sonner-loading-bar {
+        position: absolute;
+        top: -3.9%;
+        left: -10%;
+        animation: sonner-spin 1.2s linear infinite;
+        border-radius: 6px;
+        background: var(--gray11);
+        width: 24%;
+        height: 8%;
+
+        @for $i from 1 through 12 {
+            &:nth-child(#{$i}) {
+                $angle: ($i - 1) * 30deg;
+                transform: rotate($angle) translate(146%);
+                animation-delay: -#{1.3 - ($i * 0.1)}s;
+            }
+        }
+    }
+}
+
 @keyframes loading {
     0% {
         transform: rotate(0deg);
@@ -386,5 +427,14 @@ html[dir='rtl'],
     100% {
         transform: scale(1);
         opacity: 1;
+    }
+}
+
+@keyframes sonner-spin {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.15;
     }
 }
