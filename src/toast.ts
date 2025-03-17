@@ -26,8 +26,6 @@ export function addToast(options: ToastType) {
         toast.innerHTML = '';
 
         clearTimeout(toastTimers.get(id)?.timeId);
-        const timeId = setTimeout(dismissToast, duration, id);
-        toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
     } else {
         toast = document.createElement('li');
         toast.setAttribute('data-sonner-toast', '');
@@ -51,11 +49,6 @@ export function addToast(options: ToastType) {
                 time.timeId = setTimeout(dismissToast, time.remainingTime, _id);
             });
         });
-
-        if (duration) {
-            const timeId = setTimeout(dismissToast, duration, id);
-            toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
-        }
     }
 
     // richColors
@@ -104,6 +97,11 @@ export function addToast(options: ToastType) {
             dismissToast(id);
         });
         toast.appendChild(button);
+    }
+
+    if (duration > 0) {
+        const timeId = setTimeout(dismissToast, duration, id);
+        toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
     }
 
     if (!(options.id && toastMap.has(id))) {
