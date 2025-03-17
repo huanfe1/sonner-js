@@ -1,5 +1,6 @@
 import { type Metadata } from 'next';
 
+import Analytics from '@/components/analytics';
 import '@/styles/globals.css';
 import '@/styles/index.css';
 import '@/styles/style.css';
@@ -34,6 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <html lang="en">
             <head>
                 <link rel="shortcut icon" href="favicon.ico" />
+                {process.env.NODE_ENV !== 'development' && <Analytics />}
             </head>
             <body>{children}</body>
         </html>

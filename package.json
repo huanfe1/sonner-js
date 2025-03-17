@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "rollup -c -w",
         "build": "rollup -c",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "postversion": "git push && git push --tags"
     },
     "exports": {
         ".": {
