@@ -1,8 +1,8 @@
 # Sonner for Pure JS
 
-## Introduction
+An opinionated toast component for Pure JS.
 
-Sonner is an opinionated toast component for React, I use pure js to rewrite the toast component.
+Base on [Sonner](https://sonner.emilkowal.ski/)
 
 ## Install
 

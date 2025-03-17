@@ -5,6 +5,7 @@ import { Other } from '@/components/Other/Other';
 import { Types } from '@/components/Types';
 import { Usage } from '@/components/Usage';
 import { Expand } from '@/components/expand';
+import Foot from '@/components/foot';
 import { Hero } from '@/components/hero';
 import { Position } from '@/components/position';
 import { Theme } from '@/components/theme';
@@ -24,6 +25,7 @@ export default function Home() {
                     <Other />
                 </div>
             </main>
+            <Foot />
         </div>
     );
 }
