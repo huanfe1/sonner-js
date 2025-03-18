@@ -9,9 +9,9 @@ const icons = { success: successIcon, error: errorIcon, info: infoIcon, warning:
 const toastTimers = new Map<number | string, { timeId: number; startTime: number; remainingTime: number }>();
 const toastMap = new Map<number | string, HTMLElement>();
 
-export function addToast(options: ToastType) {
-    let toast: HTMLElement;
+let loadingCurrentTime: CSSNumberish | null = null;
 
+export function addToast(options: ToastType) {
     const id = options.id ?? crypto.randomUUID();
     const duration = options.duration ?? config.toastOptions.duration;
     const closeButton = options.closeButton ?? config.toastOptions.closeButton;
@@ -19,37 +19,10 @@ export function addToast(options: ToastType) {
     const richColors = options.richColors ?? config.toastOptions.richColors;
     const toaster = getToaster(position);
 
-    // Reuse existing toast if provided id
-    if (options.id && toastMap.has(id)) {
-        toast = toastMap.get(id)!;
+    const oldToast = (options.id && toastMap.get(id)) || null;
 
-        toast.innerHTML = '';
-
-        clearTimeout(toastTimers.get(id)?.timeId);
-    } else {
-        toast = document.createElement('li');
-        toast.setAttribute('data-sonner-toast', '');
-
-        toast.style.setProperty('--offset', '-120%');
-
-        // pause all timers when hover toaster
-        toast.addEventListener('mouseenter', () => {
-            toastTimers.forEach(time => {
-                clearTimeout(time.timeId);
-                const now = new Date().getTime();
-                const diff = now - time.startTime;
-                time.remainingTime -= diff;
-            });
-        });
-
-        toast.addEventListener('mouseleave', () => {
-            toastTimers.forEach((time, _id) => {
-                const now = new Date().getTime();
-                time.startTime = now;
-                time.timeId = setTimeout(dismissToast, time.remainingTime, _id);
-            });
-        });
-    }
+    const toast: HTMLElement = document.createElement('li');
+    toast.setAttribute('data-sonner-toast', '');
 
     // richColors
     if (richColors && options.type) {
@@ -64,12 +37,18 @@ export function addToast(options: ToastType) {
     close.addEventListener('click', () => dismissToast(id), { once: true });
     toast.appendChild(close);
 
-    // add content
     if (options.type) {
         const icon = document.createElement('span');
         icon.innerHTML = icons[options.type];
         icon.setAttribute('data-icon', '');
         toast.appendChild(icon);
+
+        if (options.type === 'loading' && oldToast) {
+            const currentTime = oldToast.querySelector('[data-icon] div')?.getAnimations()?.[0].currentTime;
+            if (currentTime) {
+                loadingCurrentTime = currentTime;
+            }
+        }
     }
 
     const content = document.createElement('div');
@@ -99,12 +78,42 @@ export function addToast(options: ToastType) {
         toast.appendChild(button);
     }
 
+    // pause all timers when hover toaster
+    toast.addEventListener('mouseenter', () => {
+        toastTimers.forEach(time => {
+            clearTimeout(time.timeId);
+            const now = new Date().getTime();
+            const diff = now - time.startTime;
+            time.remainingTime -= diff;
+        });
+    });
+
+    toast.addEventListener('mouseleave', () => {
+        toastTimers.forEach((time, _id) => {
+            const now = new Date().getTime();
+            time.startTime = now;
+            time.timeId = setTimeout(dismissToast, time.remainingTime, _id);
+        });
+    });
+
     if (duration > 0) {
         const timeId = setTimeout(dismissToast, duration, id);
         toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
     }
 
-    if (!(options.id && toastMap.has(id))) {
+    if (oldToast) {
+        toast.setAttribute('style', oldToast.getAttribute('style') || '');
+        toaster.replaceChild(toast, oldToast);
+        toastMap.set(id, toast);
+
+        if (loadingCurrentTime) {
+            const animations = toast.querySelector('[data-icon] div')?.getAnimations();
+            if (animations) {
+                animations[0].currentTime = loadingCurrentTime;
+            }
+        }
+    } else {
+        toast.style.setProperty('--offset', '-120%');
         toaster.appendChild(toast);
         toastMap.set(id, toast);
     }
