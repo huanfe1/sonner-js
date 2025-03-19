@@ -30,8 +30,8 @@ const promise = <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<Toa
         .finally(data.finally);
 };
 
-const toast = (message: string, options?: ExternalToast) => addToast({ title: message, ...options });
-toast.message = (message: string, options?: ExternalToast) => addToast({ title: message, ...options });
+const toast = (message: string, options?: Omit<ExternalToast, 'richColors'>) => addToast({ title: message, ...options });
+toast.message = (message: string, options?: Omit<ExternalToast, 'richColors'>) => addToast({ title: message, ...options });
 toast.success = (message: string, options?: ExternalToast) => addToast({ type: 'success', title: message, ...options });
 toast.error = (message: string, options?: ExternalToast) => addToast({ type: 'error', title: message, ...options });
 toast.info = (message: string, options?: ExternalToast) => addToast({ type: 'info', title: message, ...options });

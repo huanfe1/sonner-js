@@ -24,10 +24,11 @@ export function addToast(options: ToastType) {
     const toast: HTMLElement = document.createElement('li');
     toast.setAttribute('data-sonner-toast', '');
 
+    options.type && toast.setAttribute('data-type', options.type);
+
     // richColors
     if (richColors && options.type) {
         toast.setAttribute('data-rich-colors', '');
-        toast.setAttribute('data-type', options.type);
     }
 
     // add close button
@@ -115,6 +116,7 @@ export function addToast(options: ToastType) {
     } else {
         toast.style.setProperty('--offset', '-120%');
         toaster.appendChild(toast);
+        window.requestAnimationFrame(() => toast.style.setProperty('--offset', '0'));
         toastMap.set(id, toast);
     }
 

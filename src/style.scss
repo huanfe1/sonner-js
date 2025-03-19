@@ -148,15 +148,10 @@ html[dir='rtl'],
         width: 16px;
         height: 16px;
 
-        &[data-visible='false'] {
-            transform-origin: center;
-            animation: sonner-fade-out 0.2s ease forwards;
-        }
         & > svg {
             flex-shrink: 0;
             transform-origin: center;
             animation: sonner-fade-in 300ms ease forwards;
-            will-change: transform;
         }
     }
 
@@ -335,7 +330,7 @@ html[dir='rtl'],
 }
 
 // richColors
-[data-sonner-toast][data-rich-colors='true'] {
+[data-sonner-toast][data-rich-colors] {
     &[data-type='success'] {
         border-color: var(--success-border);
         background: var(--success-bg);
