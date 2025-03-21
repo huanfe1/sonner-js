@@ -75,24 +75,25 @@ function assignOffset(container: HTMLElement) {
     if (toasts.length === 0) return;
 
     const frontToast = toasts[0];
-    if (!getPropertyValue(frontToast, 'init-height')) frontToast.style.setProperty('--init-height', `${frontToast.offsetHeight}px`);
+    frontToast.setAttribute('data-mounted', 'true');
+    if (!getPropertyValue(frontToast, 'init-height')) {
+        frontToast.style.setProperty('--init-height', `${frontToast.offsetHeight}px`);
+    }
 
-    window.requestAnimationFrame(() => {
-        toasts.forEach((toast, index) => {
-            const nextCard = toast.nextElementSibling as HTMLLIElement;
-            const offset = nextCard ? parseFloat(getPropertyValue(nextCard, 'offset')) + parseFloat(getPropertyValue(nextCard, 'init-height')) + gap : 0;
+    toasts.forEach((toast, index) => {
+        const nextCard = toast.nextElementSibling as HTMLLIElement;
+        const offset = nextCard ? parseFloat(getPropertyValue(nextCard, 'offset')) + parseFloat(getPropertyValue(nextCard, 'init-height')) + gap : 0;
 
-            toast.style.setProperty('--offset', `${offset}px`);
-            toast.style.setProperty('--index', index.toString());
+        toast.style.setProperty('--offset', `${offset}px`);
+        toast.style.setProperty('--index', index.toString());
 
-            // limit display toast count
-            if (index + 1 > visibleToasts) {
-                toast.style.setProperty('--opacity', '0');
-            } else {
-                toast.style.setProperty('--opacity', '1');
-            }
-        });
+        if (index + 1 > visibleToasts) {
+            toast.style.setProperty('--opacity', '0');
+        } else {
+            toast.style.setProperty('--opacity', '1');
+        }
     });
+
     container.style.setProperty('--front-height', `${toasts[0]?.offsetHeight}px`);
 }
 

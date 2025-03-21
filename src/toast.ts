@@ -1,7 +1,7 @@
 import { closeIcon } from './assets';
 import { errorIcon, infoIcon, loadingIcon, successIcon, warningIcon } from './assets';
 import { config } from './config';
-import { getOffset, getToaster } from './toaster';
+import { getToaster } from './toaster';
 import { ToastType } from './types';
 
 const icons = { success: successIcon, error: errorIcon, info: infoIcon, warning: warningIcon, loading: loadingIcon };
@@ -19,7 +19,7 @@ export function addToast(options: ToastType) {
     const richColors = options.richColors ?? config.toastOptions.richColors;
     const toaster = getToaster(position);
 
-    const oldToast = (options.id && toastMap.get(id)) || null;
+    const oldToast = (options.id && toastMap.get(id)?.isConnected && toastMap.get(id)) || null;
 
     const toast: HTMLElement = document.createElement('li');
     toast.setAttribute('data-sonner-toast', '');
@@ -104,6 +104,7 @@ export function addToast(options: ToastType) {
 
     if (oldToast) {
         toast.setAttribute('style', oldToast.getAttribute('style') || '');
+        toast.setAttribute('data-mounted', 'true');
         toaster.replaceChild(toast, oldToast);
         toastMap.set(id, toast);
 
@@ -114,9 +115,7 @@ export function addToast(options: ToastType) {
             }
         }
     } else {
-        toast.style.setProperty('--offset', '-120%');
         toaster.appendChild(toast);
-        window.requestAnimationFrame(() => toast.style.setProperty('--offset', '0'));
         toastMap.set(id, toast);
     }
 
@@ -135,8 +134,6 @@ export function dismissToast(id?: ToastType['id']) {
     if (!toast) return;
 
     toast.setAttribute('data-state', 'deleting');
-    toast.style.setProperty('--offset', `${getOffset(toast) - toast.offsetHeight}px`);
-    toast.style.setProperty('--opacity', '0');
     toast.addEventListener('transitionend', () => window.requestAnimationFrame(() => toast.remove()), { once: true });
 
     toastMap.delete(id);
