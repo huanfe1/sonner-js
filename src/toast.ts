@@ -97,6 +97,39 @@ export function addToast(options: ToastType) {
         });
     });
 
+    // drag and dismiss toast
+    toast.addEventListener('mousedown', e => {
+        toast.setAttribute('data-swiping', 'true');
+        const startX = e.clientX;
+
+        let deltaX = 0;
+
+        const onMouseMove = (e: MouseEvent) => {
+            deltaX = e.clientX - startX;
+
+            const resistanceCoefficient = deltaX < 0 ? 0.02 : 1;
+            deltaX *= resistanceCoefficient;
+
+            toast.style.setProperty('--swipe-amount-x', `${deltaX}px`);
+        };
+
+        const onMouseUp = () => {
+            if (deltaX > 30) {
+                // dismissToast(id);
+                toast.setAttribute('data-state', 'deleting');
+                toast.addEventListener('transitionend', () => toaster.removeChild(toast), { once: true });
+            } else {
+                toast.setAttribute('data-swiping', 'false');
+            }
+            toast.style.setProperty('--swipe-amount-x', '0');
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    });
+
     if (duration > 0) {
         const timeId = setTimeout(dismissToast, duration, id);
         toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
