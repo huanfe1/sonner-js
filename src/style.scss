@@ -314,19 +314,16 @@ html[dir='rtl'],
     transition: none;
 
     &[data-state='deleting'] {
-        transform: translateX(200%);
+        transform: translateX(var(--width));
+        opacity: 1;
         transition: transform 0.2s;
     }
-}
 
-[data-sonner-toaster]:has([data-swiping='true']) > [data-sonner-toast]::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 500px;
-    content: '';
+    &::before {
+        position: fixed;
+        inset: -100vh -100vw;
+        content: '';
+    }
 }
 
 // close-button

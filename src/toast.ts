@@ -115,9 +115,7 @@ export function addToast(options: ToastType) {
 
         const onMouseUp = () => {
             if (deltaX > 30) {
-                // dismissToast(id);
-                toast.setAttribute('data-state', 'deleting');
-                toast.addEventListener('transitionend', () => toaster.removeChild(toast), { once: true });
+                dismissToast(id);
             } else {
                 toast.setAttribute('data-swiping', 'false');
             }
