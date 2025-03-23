@@ -309,6 +309,23 @@ html[dir='rtl'],
     }
 }
 
+[data-sonner-toast][data-swiping='true'] {
+    transform: translateY(calc(var(--lift) * var(--offset, 0px))) translateY(var(--swipe-amount-y, 0)) translateX(var(--swipe-amount-x, 0));
+    transition: none;
+
+    &[data-state='deleting'] {
+        transform: translateY(calc(var(--lift) * var(--offset, 0px))) translateY(var(--swipe-amount-y, 0)) translateX(var(--swipe-amount-x, 0));
+        opacity: 1;
+        transition: transform 0.2s;
+    }
+
+    &::before {
+        position: fixed;
+        inset: -100vh -100vw;
+        content: '';
+    }
+}
+
 // close-button
 [data-sonner-toast] [data-close-button='true'] {
     display: flex;
