@@ -16,6 +16,8 @@ export type ToastOptionsType = {
     closeButton?: boolean;
     richColors?: boolean;
     duration?: number;
+    onDismiss?: (toast?: ToastType) => void;
+    onAutoClose?: (toast?: ToastType) => void;
 };
 
 export type ToastContentType = {

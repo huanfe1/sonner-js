@@ -17,6 +17,15 @@ export function addToast(options: ToastType) {
     const closeButton = options.closeButton ?? config.toastOptions.closeButton;
     const position = options.position ?? config.toastOptions.position;
     const richColors = options.richColors ?? config.toastOptions.richColors;
+    const onDismiss = () => {
+        options.onDismiss && options.onDismiss(options);
+        config.toastOptions.onDismiss(options);
+    };
+    const onAutoClose = () => {
+        options.onAutoClose && options.onAutoClose(options);
+        config.toastOptions.onAutoClose(options);
+    };
+
     const toaster = getToaster(position);
 
     const oldToast = (options.id && toastMap.get(id)?.isConnected && toastMap.get(id)) || null;
@@ -35,7 +44,10 @@ export function addToast(options: ToastType) {
     const close = document.createElement('button');
     close.setAttribute('data-close-button', closeButton.toString());
     close.innerHTML = closeIcon;
-    close.addEventListener('click', () => dismissToast(id), { once: true });
+    close.addEventListener('click', () => {
+        dismissToast(id);
+        onDismiss();
+    });
     toast.appendChild(close);
 
     if (options.type) {
@@ -99,7 +111,11 @@ export function addToast(options: ToastType) {
 
     // close toast
     if (duration > 0) {
-        const timeId = setTimeout(dismissToast, duration, id);
+        const timeId = setTimeout(() => {
+            onAutoClose();
+            dismissToast(id);
+        }, duration);
+
         toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
 
         // swipe toast to dismiss
@@ -142,9 +158,11 @@ export function addToast(options: ToastType) {
             const onMouseUp = () => {
                 if (directionLocked === 'x' && Math.abs(deltaX) > 30) {
                     toast.style.setProperty('--swipe-amount-x', `${liftX * 300}%`);
+                    onDismiss();
                     dismissToast(id, 200);
                 } else if (directionLocked === 'y' && Math.abs(deltaY) > 10) {
                     toast.style.setProperty('--swipe-amount-y', `${liftY * 300}%`);
+                    onDismiss();
                     dismissToast(id, 200);
                 } else {
                     toast.setAttribute('data-swiping', 'false');
