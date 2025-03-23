@@ -97,40 +97,68 @@ export function addToast(options: ToastType) {
         });
     });
 
-    // drag and dismiss toast
-    toast.addEventListener('mousedown', e => {
-        toast.setAttribute('data-swiping', 'true');
-        const startX = e.clientX;
-
-        let deltaX = 0;
-
-        const onMouseMove = (e: MouseEvent) => {
-            deltaX = e.clientX - startX;
-
-            const resistanceCoefficient = deltaX < 0 ? 0.02 : 1;
-            deltaX *= resistanceCoefficient;
-
-            toast.style.setProperty('--swipe-amount-x', `${deltaX}px`);
-        };
-
-        const onMouseUp = () => {
-            if (deltaX > 30) {
-                dismissToast(id);
-            } else {
-                toast.setAttribute('data-swiping', 'false');
-            }
-            toast.style.setProperty('--swipe-amount-x', '0');
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    });
-
+    // close toast
     if (duration > 0) {
         const timeId = setTimeout(dismissToast, duration, id);
         toastTimers.set(id, { timeId, startTime: new Date().getTime(), remainingTime: duration });
+
+        // swipe toast to dismiss
+        toast.addEventListener('mousedown', e => {
+            toast.setAttribute('data-swiping', 'true');
+            const startX = e.clientX;
+            const startY = e.clientY;
+
+            let deltaX = 0;
+            let deltaY = 0;
+            let directionLocked: 'x' | 'y' | null = null;
+
+            const [positionY, positionX] = position.split('-');
+            const liftX = positionX === 'right' ? 1 : -1;
+            const liftY = positionY === 'bottom' ? 1 : -1;
+
+            if (positionX === 'center') {
+                directionLocked = 'y';
+            }
+
+            const onMouseMove = (e: MouseEvent) => {
+                deltaX = e.clientX - startX;
+                deltaY = e.clientY - startY;
+
+                directionLocked ??= Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
+
+                if (directionLocked === 'x') {
+                    const resistanceCoefficient = deltaX * liftX < 0 ? 0.02 : 1;
+                    deltaX *= resistanceCoefficient;
+                    toast.style.setProperty('--swipe-amount-x', `${deltaX}px`);
+                    toast.style.setProperty('--swipe-amount-y', `0`);
+                } else if (directionLocked === 'y') {
+                    const resistanceCoefficient = deltaY * liftY < 0 ? 0.02 : 1;
+                    deltaY *= resistanceCoefficient;
+                    toast.style.setProperty('--swipe-amount-y', `${deltaY}px`);
+                    toast.style.setProperty('--swipe-amount-x', `0`);
+                }
+            };
+
+            const onMouseUp = () => {
+                if (directionLocked === 'x' && Math.abs(deltaX) > 30) {
+                    toast.style.setProperty('--swipe-amount-x', `${liftX * 300}%`);
+                    dismissToast(id, 200);
+                } else if (directionLocked === 'y' && Math.abs(deltaY) > 10) {
+                    toast.style.setProperty('--swipe-amount-y', `${liftY * 300}%`);
+                    dismissToast(id, 200);
+                } else {
+                    toast.setAttribute('data-swiping', 'false');
+                    toast.style.setProperty('--swipe-amount-x', '0');
+                    toast.style.setProperty('--swipe-amount-y', '0');
+                }
+
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            };
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
     }
 
     if (oldToast) {
@@ -153,7 +181,7 @@ export function addToast(options: ToastType) {
     return id;
 }
 
-export function dismissToast(id?: ToastType['id']) {
+export function dismissToast(id?: ToastType['id'], exitTime: number = 400) {
     if (toastMap.size === 0) return;
 
     if (id === undefined) {
@@ -165,8 +193,7 @@ export function dismissToast(id?: ToastType['id']) {
     if (!toast) return;
 
     toast.setAttribute('data-state', 'deleting');
-    toast.addEventListener('transitionend', () => window.requestAnimationFrame(() => toast.remove()), { once: true });
-
+    setTimeout(() => window.requestAnimationFrame(() => toast.remove()), exitTime);
     toastMap.delete(id);
     toastTimers.delete(id);
 }
