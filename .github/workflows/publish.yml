@@ -1,8 +1,9 @@
 name: Publish to NPM
 
 on:
-    release:
-        types: [published]
+    push:
+        tags:
+            - 'v*'
 
 jobs:
     build:
@@ -20,6 +21,10 @@ jobs:
                   node-version: 22
                   cache: pnpm
                   registry-url: 'https://registry.npmjs.org'
+            - run: npx changelogithub
+              continue-on-error: true
+              env:
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
             - run: pnpm install --frozen-lockfile
             - run: pnpm run build
             - name: Publish to NPM
