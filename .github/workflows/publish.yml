@@ -1,5 +1,8 @@
 name: Publish to NPM
 
+permissions:
+    contents: write
+
 on:
     push:
         tags:
@@ -24,10 +27,12 @@ jobs:
             - run: npx changelogithub
               continue-on-error: true
               env:
-                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - run: pnpm install --frozen-lockfile
             - run: pnpm run build
             - name: Publish to NPM
               run: npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Website Deploy
+              run: curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
