@@ -24,7 +24,8 @@ html[dir='rtl'],
     --toast-close-button-transform: translate(35%, -35%);
 }
 
-[data-sonner-toaster][data-sonner-theme='light'] {
+[data-sonner-toaster][data-sonner-theme='light'],
+[data-sonner-toaster][data-sonner-theme='dark'] > [data-sonner-toast][data-invert] {
     --normal-bg: #fff;
     --normal-border: var(--gray4);
     --normal-text: var(--gray12);
@@ -48,7 +49,8 @@ html[dir='rtl'],
     --error-text: hsl(360, 100%, 45%);
 }
 
-[data-sonner-toaster][data-sonner-theme='dark'] {
+[data-sonner-toaster][data-sonner-theme='dark'],
+[data-sonner-toaster][data-sonner-theme='light'] > [data-sonner-toast][data-invert] {
     --normal-bg: #000;
     --normal-bg-hover: hsl(0, 0%, 12%);
     --normal-border: hsl(0, 0%, 20%);

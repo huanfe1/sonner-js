@@ -13,10 +13,13 @@ let loadingCurrentTime: CSSNumberish | null = null;
 
 export function addToast(options: ToastType) {
     const id = options.id ?? crypto.randomUUID();
+
     const duration = options.duration ?? config.toastOptions.duration;
     const closeButton = options.closeButton ?? config.toastOptions.closeButton;
     const position = options.position ?? config.toastOptions.position;
     const richColors = options.richColors ?? config.toastOptions.richColors;
+    const invert = options.invert ?? config.toastOptions.invert;
+
     const onDismiss = () => {
         options.onDismiss && options.onDismiss(options);
         config.toastOptions.onDismiss(options);
@@ -31,9 +34,10 @@ export function addToast(options: ToastType) {
     const oldToast = (options.id && toastMap.get(id)?.isConnected && toastMap.get(id)) || null;
 
     const toast: HTMLElement = document.createElement('li');
-    toast.setAttribute('data-sonner-toast', '');
 
+    toast.setAttribute('data-sonner-toast', '');
     options.type && toast.setAttribute('data-type', options.type);
+    invert && toast.setAttribute('data-invert', '');
 
     // richColors
     if (richColors && options.type) {

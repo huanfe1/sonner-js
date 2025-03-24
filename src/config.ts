@@ -14,6 +14,7 @@ const defaultConfig: Omit<Required<ToasterType>, 'toastOptions'> & { toastOption
         closeButton: false,
         richColors: false,
         duration: 3000,
+        invert: false,
         onDismiss: () => {},
         onAutoClose: () => {},
     },
