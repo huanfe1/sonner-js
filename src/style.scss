@@ -29,6 +29,7 @@ html[dir='rtl'],
     --normal-border: var(--gray4);
     --normal-text: var(--gray12);
     --normal-text2: #3f3f3f;
+    --normal-cancel-bg: rgba(0, 0, 0, 0.08);
 
     --success-bg: hsl(143, 85%, 96%);
     --success-border: hsl(145, 92%, 87%);
@@ -54,6 +55,7 @@ html[dir='rtl'],
     --normal-border-hover: hsl(0, 0%, 25%);
     --normal-text: var(--gray1);
     --normal-text2: #e8e8e8;
+    --normal-cancel-bg: rgba(255, 255, 255, 0.3);
 
     --success-bg: hsl(150, 100%, 6%);
     --success-border: hsl(147, 100%, 12%);
@@ -201,6 +203,11 @@ html[dir='rtl'],
         color: var(--normal-bg);
         font-weight: 500;
         font-size: 12px;
+
+        &[data-cancel] {
+            background: var(--normal-cancel-bg);
+            color: var(--normal-text);
+        }
     }
 }
 

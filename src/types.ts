@@ -28,6 +28,7 @@ export type ToastContentType = {
     action?: {
         label: string;
         onClick: (event: MouseEvent) => void;
+        cancel?: boolean;
     };
 };
 
