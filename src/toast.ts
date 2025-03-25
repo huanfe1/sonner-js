@@ -1,7 +1,7 @@
 import { closeIcon } from './assets';
 import { errorIcon, infoIcon, loadingIcon, successIcon, warningIcon } from './assets';
 import { config } from './config';
-import { getToaster } from './toaster';
+import { assignOffset, getToaster } from './toaster';
 import { ToastType } from './types';
 
 const icons = { success: successIcon, error: errorIcon, info: infoIcon, warning: warningIcon, loading: loadingIcon };
@@ -14,25 +14,11 @@ let loadingCurrentTime: CSSNumberish | null = null;
 export function addToast(options: ToastType) {
     const id = options.id ?? crypto.randomUUID();
 
-    const duration = options.duration ?? config.toastOptions.duration;
-    const closeButton = options.closeButton ?? config.toastOptions.closeButton;
-    const position = options.position ?? config.toastOptions.position;
-    const richColors = options.richColors ?? config.toastOptions.richColors;
-    const invert = options.invert ?? config.toastOptions.invert;
-
-    const onDismiss = () => {
-        options.onDismiss && options.onDismiss(options);
-        config.toastOptions.onDismiss(options);
-    };
-    const onAutoClose = () => {
-        options.onAutoClose && options.onAutoClose(options);
-        config.toastOptions.onAutoClose(options);
-    };
+    const { duration, closeButton, position, richColors, invert, onDismiss, onAutoClose } = Object.assign({}, config.toastOptions, options);
 
     const toaster = getToaster(position);
 
     const oldToast = (options.id && toastMap.get(id)?.isConnected && toastMap.get(id)) || null;
-
     const toast: HTMLElement = document.createElement('li');
 
     toast.setAttribute('data-sonner-toast', '');
@@ -92,6 +78,7 @@ export function addToast(options: ToastType) {
         button.addEventListener('mousedown', e => e.stopPropagation());
         button.addEventListener('click', e => {
             options.action?.onClick(e);
+            onDismiss();
             dismissToast(id);
         });
         toast.appendChild(button);
@@ -217,6 +204,7 @@ export function dismissToast(id?: ToastType['id'], exitTime: number = 400) {
     if (!toast) return;
 
     toast.setAttribute('data-state', 'deleting');
+    assignOffset(toast.parentElement as HTMLElement);
     setTimeout(() => window.requestAnimationFrame(() => toast.remove()), exitTime);
     toastMap.delete(id);
     toastTimers.delete(id);

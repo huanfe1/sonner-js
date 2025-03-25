@@ -69,7 +69,7 @@ export function getToaster(position: Position) {
     return toaster;
 }
 
-function assignOffset(container: HTMLElement) {
+export function assignOffset(container: HTMLElement) {
     const { visibleToasts, gap } = config;
     const toasts = [...container.querySelectorAll('li:not([data-state="deleting"])')].reverse() as HTMLLIElement[];
     if (toasts.length === 0) return;
@@ -82,7 +82,7 @@ function assignOffset(container: HTMLElement) {
 
     toasts.forEach((toast, index) => {
         const nextCard = toast.nextElementSibling as HTMLLIElement;
-        const offset = nextCard ? parseFloat(getPropertyValue(nextCard, 'offset')) + parseFloat(getPropertyValue(nextCard, 'init-height')) + gap : 0;
+        const offset = index > 0 ? parseFloat(getPropertyValue(nextCard, 'offset')) + parseFloat(getPropertyValue(nextCard, 'init-height')) + gap : 0;
 
         toast.style.setProperty('--offset', `${offset}px`);
         toast.style.setProperty('--index', index.toString());
