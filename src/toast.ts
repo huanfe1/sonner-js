@@ -89,6 +89,7 @@ export function addToast(options: ToastType) {
         button.setAttribute('data-button', '');
         button.textContent = options.action.label;
         options.action.cancel && button.setAttribute('data-cancel', '');
+        button.addEventListener('mousedown', e => e.stopPropagation());
         button.addEventListener('click', e => {
             options.action?.onClick(e);
             dismissToast(id);
