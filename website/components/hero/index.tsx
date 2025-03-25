@@ -19,7 +19,7 @@ export const Hero = () => {
                     data-primary=""
                     onClick={() => {
                         toast('Sonner', {
-                            description: 'An opinionated toast component for React.',
+                            description: 'An opinionated toast component for Pure JS.',
                         });
                     }}
                     className="px-10 bg-[#ebd528] text-[#fcfcfc] text-[13px] rounded-lg font-semibold hover:bg-[#dec91e]"
