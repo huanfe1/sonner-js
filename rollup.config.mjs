@@ -1,3 +1,4 @@
+import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import { defineConfig } from 'rollup';
 import { dts } from 'rollup-plugin-dts';
@@ -24,7 +25,7 @@ export default defineConfig([
                 sourcemap: true,
             },
         ],
-        plugins: [typescript({ tsconfig: './tsconfig.json' }), postcss({ use: { sass: { silenceDeprecations: ['legacy-js-api'] } } })],
+        plugins: [typescript({ tsconfig: './tsconfig.json' }), postcss({ use: { sass: { silenceDeprecations: ['legacy-js-api'] } }, minimize: true }), terser()],
     },
     {
         input: 'src/index.ts',
