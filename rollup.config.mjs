@@ -20,12 +20,16 @@ export default defineConfig([
             },
             {
                 format: 'umd',
-                name: 'toast',
+                name: 'sonnerJS',
                 file: './dist/umd/index.js',
                 sourcemap: true,
             },
         ],
-        plugins: [typescript({ tsconfig: './tsconfig.json' }), postcss({ use: { sass: { silenceDeprecations: ['legacy-js-api'] } }, minimize: true }), terser()],
+        plugins: [
+            typescript({ tsconfig: './tsconfig.json' }),
+            postcss({ use: { sass: { silenceDeprecations: ['legacy-js-api'] } }, minimize: true }),
+            terser(),
+        ],
     },
     {
         input: 'src/index.ts',

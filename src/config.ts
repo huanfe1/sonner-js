@@ -23,6 +23,10 @@ const defaultConfig: Omit<Required<ToasterType>, 'toastOptions'> & { toastOption
 export let config = { ...defaultConfig };
 
 export function setConfig(userConfig: ToasterType) {
-    config = { ...defaultConfig, ...userConfig, toastOptions: { ...defaultConfig.toastOptions, ...userConfig.toastOptions } };
+    config = {
+        ...defaultConfig,
+        ...userConfig,
+        toastOptions: { ...defaultConfig.toastOptions, ...userConfig.toastOptions },
+    };
     updateToasterConfig();
 }

@@ -82,7 +82,12 @@ export function assignOffset(container: HTMLElement) {
 
     toasts.forEach((toast, index) => {
         const nextCard = toast.nextElementSibling as HTMLLIElement;
-        const offset = index > 0 ? parseFloat(getPropertyValue(nextCard, 'offset')) + parseFloat(getPropertyValue(nextCard, 'init-height')) + gap : 0;
+        const offset =
+            index > 0
+                ? parseFloat(getPropertyValue(nextCard, 'offset')) +
+                  parseFloat(getPropertyValue(nextCard, 'init-height')) +
+                  gap
+                : 0;
 
         toast.style.setProperty('--offset', `${offset}px`);
         toast.style.setProperty('--index', index.toString());

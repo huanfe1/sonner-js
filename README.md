@@ -118,7 +118,7 @@ You can dismiss toast by use `toast.dismiss()`
 
 ```js
 const toastId = toast('Event has been created');
- 
+
 toast.dismiss(toastId);
 ```
 
@@ -135,7 +135,7 @@ If you want a toast to never disappear, you can set the `duration` to `0`.
 ```js
 toast('Event has been created', {
     duration: 0,
-})
+});
 ```
 
 ## License

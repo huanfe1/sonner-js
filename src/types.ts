@@ -43,7 +43,9 @@ export interface PromiseIExtendedResult extends ExternalToast {
     message: string;
 }
 
-export type PromiseTExtendedResult<Data = any> = PromiseIExtendedResult | ((data: Data) => PromiseIExtendedResult | Promise<PromiseIExtendedResult>);
+export type PromiseTExtendedResult<Data = any> =
+    | PromiseIExtendedResult
+    | ((data: Data) => PromiseIExtendedResult | Promise<PromiseIExtendedResult>);
 
 export type PromiseTResult<Data = any> = string | ((data: Data) => string | Promise<string>);
 

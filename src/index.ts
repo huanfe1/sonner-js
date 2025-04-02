@@ -8,7 +8,9 @@ const promise = <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<Toa
     if (!data) return;
     let id: string | number | undefined;
     if (data.loading !== undefined) {
-        id = toast.loading(data.loading, { description: typeof data.description !== 'function' ? data.description : '' });
+        id = toast.loading(data.loading, {
+            description: typeof data.description !== 'function' ? data.description : '',
+        });
     }
     promise = typeof promise === 'function' ? promise() : promise;
 
@@ -30,13 +32,16 @@ const promise = <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<Toa
         .finally(data.finally);
 };
 
-const toast = (message: string, options?: Omit<ExternalToast, 'richColors'>) => addToast({ title: message, ...options });
-toast.message = (message: string, options?: Omit<ExternalToast, 'richColors'>) => addToast({ title: message, ...options });
+const toast = (message: string, options?: Omit<ExternalToast, 'richColors'>) =>
+    addToast({ title: message, ...options });
+toast.message = (message: string, options?: Omit<ExternalToast, 'richColors'>) =>
+    addToast({ title: message, ...options });
 toast.success = (message: string, options?: ExternalToast) => addToast({ type: 'success', title: message, ...options });
 toast.error = (message: string, options?: ExternalToast) => addToast({ type: 'error', title: message, ...options });
 toast.info = (message: string, options?: ExternalToast) => addToast({ type: 'info', title: message, ...options });
 toast.warning = (message: string, options?: ExternalToast) => addToast({ type: 'warning', title: message, ...options });
-toast.loading = (message: string, options?: ExternalToast) => addToast({ type: 'loading', title: message, duration: 0, ...options });
+toast.loading = (message: string, options?: ExternalToast) =>
+    addToast({ type: 'loading', title: message, duration: 0, ...options });
 toast.dismiss = dismissToast;
 toast.promise = promise;
 toast.config = setConfig;

@@ -1,6 +1,6 @@
 {
     "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-css-order"],
-    "printWidth": 180,
+    "printWidth": 120,
     "tabWidth": 4,
     "semi": true,
     "singleQuote": true,
@@ -9,5 +9,12 @@
     "bracketSpacing": true,
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true,
-    "importOrder": ["<THIRD_PARTY_MODULES>", "^@internal/(.*)$", "^@/.*/(.*)$", "^[./].*(?<!\\.(c|le|sc)ss)$", "^[.]/[-a-zA-Z0-9_]+[.](module)[.](css|scss|less)$", "^[./]"]
+    "importOrder": [
+        "<THIRD_PARTY_MODULES>",
+        "^@internal/(.*)$",
+        "^@/.*/(.*)$",
+        "^[./].*(?<!\\.(c|le|sc)ss)$",
+        "^[.]/[-a-zA-Z0-9_]+[.](module)[.](css|scss|less)$",
+        "^[./]"
+    ]
 }

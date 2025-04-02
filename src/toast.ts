@@ -14,7 +14,8 @@ let loadingCurrentTime: CSSNumberish | null = null;
 export function addToast(options: ToastType) {
     const id = options.id ?? crypto.randomUUID();
 
-    const { duration, closeButton, position, richColors, invert, onDismiss, onAutoClose } = Object.assign({}, config.toastOptions, options);
+    const data = Object.assign({}, config.toastOptions, options);
+    const { duration, closeButton, position, richColors, invert, onDismiss, onAutoClose } = data;
 
     const toaster = getToaster(position);
 
