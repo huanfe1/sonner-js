@@ -40,8 +40,7 @@ toast.success = (message: string, options?: ExternalToast) => addToast({ type: '
 toast.error = (message: string, options?: ExternalToast) => addToast({ type: 'error', title: message, ...options });
 toast.info = (message: string, options?: ExternalToast) => addToast({ type: 'info', title: message, ...options });
 toast.warning = (message: string, options?: ExternalToast) => addToast({ type: 'warning', title: message, ...options });
-toast.loading = (message: string, options?: ExternalToast) =>
-    addToast({ type: 'loading', title: message, duration: 0, ...options });
+toast.loading = (message: string, options?: ExternalToast) => addToast({ type: 'loading', title: message, duration: 0, ...options });
 toast.dismiss = dismissToast;
 toast.promise = promise;
 toast.config = setConfig;

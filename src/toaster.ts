@@ -48,7 +48,7 @@ export function getToaster(position: Position) {
             observer.disconnect();
             container.removeChild(toaster);
         } else {
-            assignOffset(toaster);
+            requestAnimationFrame(() => assignOffset(toaster));
         }
     });
     observer.observe(toaster, { childList: true });

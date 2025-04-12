@@ -206,7 +206,7 @@ export function dismissToast(id?: ToastType['id'], exitTime: number = 400) {
 
     toast.setAttribute('data-state', 'deleting');
     assignOffset(toast.parentElement as HTMLElement);
-    setTimeout(() => window.requestAnimationFrame(() => toast.remove()), exitTime);
+    setTimeout(() => requestAnimationFrame(() => toast.remove()), exitTime);
     toastMap.delete(id);
     toastTimers.delete(id);
 }
