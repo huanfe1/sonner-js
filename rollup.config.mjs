@@ -27,7 +27,13 @@ export default defineConfig([
         ],
         plugins: [
             typescript({ tsconfig: './tsconfig.json' }),
-            postcss({ use: { sass: { silenceDeprecations: ['legacy-js-api'] } }, minimize: true }),
+            postcss({
+                use: {
+                    sass: { silenceDeprecations: ['legacy-js-api'] },
+                },
+                minimize: true,
+                inject: false,
+            }),
             terser(),
         ],
     },

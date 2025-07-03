@@ -2,8 +2,6 @@ import { setConfig } from './config';
 import { addToast, dismissToast } from './toast';
 import { ExternalToast, PromiseData, PromiseT } from './types';
 
-import './style.scss';
-
 const promise = <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<ToastData>) => {
     if (!data) return;
     let id: string | number | undefined;
