@@ -1,15 +1,21 @@
 import { config } from './config';
 import { Position } from './types';
 
-import './style.scss';
+// import './style.scss';
+import style from './style.scss';
 
-function getContainer(): HTMLElement {
-    let toasters = document.querySelector('[data-sonner-toasters]') as HTMLElement;
+function getContainer(): ShadowRoot {
+    const toasters = document.querySelector('[data-sonner-toasters]')?.shadowRoot;
     if (toasters) return toasters;
-    toasters = document.createElement('div');
-    toasters.setAttribute('data-sonner-toasters', '');
-    document.body.appendChild(toasters);
-    return toasters;
+
+    const app = document.createElement('div');
+    app.setAttribute('data-sonner-toasters', '');
+    document.body.appendChild(app);
+    const shadow = app.attachShadow({ mode: 'open' });
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(style);
+    shadow.adoptedStyleSheets = [sheet];
+    return shadow;
 }
 
 export function updateToasterConfig() {
@@ -82,12 +88,7 @@ export function assignOffset(container: HTMLElement) {
 
     toasts.forEach((toast, index) => {
         const nextCard = toast.nextElementSibling as HTMLLIElement;
-        const offset =
-            index > 0
-                ? parseFloat(getPropertyValue(nextCard, 'offset')) +
-                  parseFloat(getPropertyValue(nextCard, 'init-height')) +
-                  gap
-                : 0;
+        const offset = index > 0 ? parseFloat(getPropertyValue(nextCard, 'offset')) + parseFloat(getPropertyValue(nextCard, 'init-height')) + gap : 0;
 
         toast.style.setProperty('--offset', `${offset}px`);
         toast.style.setProperty('--index', index.toString());
