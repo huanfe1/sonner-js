@@ -119,6 +119,7 @@ export function addToast(options: ToastType) {
         toast.addEventListener('mousedown', e => {
             if (toast.getAttribute('data-moving') == 'true') return;
             toast.setAttribute('data-swiping', 'true');
+
             const startX = e.clientX;
             const startY = e.clientY;
 
@@ -130,15 +131,15 @@ export function addToast(options: ToastType) {
             const liftX = positionX === 'right' ? 1 : -1;
             const liftY = positionY === 'bottom' ? 1 : -1;
 
-            if (positionX === 'center') {
-                directionLocked = 'y';
-            }
+            if (positionX === 'center') directionLocked = 'y';
 
             const onMouseMove = (e: MouseEvent) => {
                 deltaX = e.clientX - startX;
                 deltaY = e.clientY - startY;
 
-                directionLocked ??= Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
+                if (Math.max(deltaX, deltaY) > 10) {
+                    directionLocked ??= Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
+                }
 
                 if (directionLocked === 'x') {
                     const resistanceCoefficient = deltaX * liftX < 0 ? 0.02 : 1;
