@@ -114,6 +114,7 @@ export function addToast(options: ToastType) {
 
         // swipe toast to dismiss
         toast.addEventListener('mousedown', e => {
+            if (toast.getAttribute('data-state') == 'deleting') return;
             toast.setAttribute('data-swiping', 'true');
             const startX = e.clientX;
             const startY = e.clientY;
