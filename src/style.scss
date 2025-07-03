@@ -117,8 +117,6 @@ html[dir='rtl'],
     position: absolute;
     align-items: center;
     gap: 6px;
-    transform: translateY(calc(var(--lift) * -100%));
-    opacity: 0;
     transition:
         transform 0.4s,
         opacity 0.4s,
@@ -134,13 +132,23 @@ html[dir='rtl'],
     color: var(--normal-text);
     font-size: 13px;
 
-    &[data-mounted='true'] {
+    &[data-state='created'] {
+        transform: translateY(calc(var(--lift) * -120%));
+        opacity: 0;
+    }
+
+    &[data-state='mounted'] {
         transform: translateY(calc(var(--lift) * var(--offset, 0px)));
-        opacity: var(--opacity);
+        opacity: 1;
     }
 
     &[data-state='deleting'] {
         transform: translateY(calc(var(--lift) * calc(var(--offset) - var(--init-height) - var(--gap))));
+        opacity: 0;
+    }
+
+    &[data-state='invisible'] {
+        transform: translateY(calc(var(--lift) * var(--offset, 0px)));
         opacity: 0;
     }
 
@@ -319,13 +327,11 @@ html[dir='rtl'],
 }
 
 [data-sonner-toast][data-swiping='true'] {
-    transform: translateY(calc(var(--lift) * var(--offset, 0px))) translateY(var(--swipe-amount-y, 0))
-        translateX(var(--swipe-amount-x, 0));
+    transform: translateY(calc(var(--lift) * var(--offset, 0px))) translateY(var(--swipe-amount-y, 0)) translateX(var(--swipe-amount-x, 0));
     transition: none;
 
     &[data-state='deleting'] {
-        transform: translateY(calc(var(--lift) * var(--offset, 0px))) translateY(var(--swipe-amount-y, 0))
-            translateX(var(--swipe-amount-x, 0));
+        transform: translateY(calc(var(--lift) * var(--offset, 0px))) translateY(var(--swipe-amount-y, 0)) translateX(var(--swipe-amount-x, 0));
         opacity: 1;
         transition: transform 0.2s;
     }
