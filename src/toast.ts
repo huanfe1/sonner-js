@@ -103,6 +103,9 @@ export function addToast(options: ToastType) {
         });
     });
 
+    toast.addEventListener('transitionstart', () => toast.setAttribute('data-moving', 'true'));
+    toast.addEventListener('transitionend', () => toast.setAttribute('data-moving', 'false'));
+
     // close toast
     if (duration > 0) {
         const timeId = setTimeout(() => {
@@ -114,7 +117,7 @@ export function addToast(options: ToastType) {
 
         // swipe toast to dismiss
         toast.addEventListener('mousedown', e => {
-            if (toast.getAttribute('data-state') == 'deleting') return;
+            if (toast.getAttribute('data-moving') == 'true') return;
             toast.setAttribute('data-swiping', 'true');
             const startX = e.clientX;
             const startY = e.clientY;
@@ -176,7 +179,6 @@ export function addToast(options: ToastType) {
 
     if (oldToast) {
         toast.setAttribute('style', oldToast.getAttribute('style') || '');
-        toast.setAttribute('data-mounted', 'true');
         toaster.replaceChild(toast, oldToast);
         toastMap.set(id, toast);
 
@@ -187,6 +189,7 @@ export function addToast(options: ToastType) {
             }
         }
     } else {
+        toast.setAttribute('data-state', 'created');
         toaster.appendChild(toast);
         toastMap.set(id, toast);
     }
