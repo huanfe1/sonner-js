@@ -20,6 +20,36 @@ import toast from 'sonner-js';
 toast('My first toast');
 ```
 
+### UMD
+
+You can use plain `<script>` to import sonner-js from CDNs, like:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/sonner-js/dist/umd/index.min.js"></script>
+```
+
+Then you can use it from a global `sonnerJS` variable:
+
+```html
+<script>
+    sonnerJS('My first toast');
+    // or
+    const sonner = sonnerJS;
+    sonner('My first toast');
+</script>
+```
+
+### ESM
+
+You can use `<script type="module">` to import sonner-js from CDNs, like:
+
+```html
+<script type="module">
+    import toast from 'https://cdn.jsdelivr.net/npm/sonner-js/+esm';
+    toast('My first toast');
+</script>
+```
+
 ## Types
 
 ### Default
