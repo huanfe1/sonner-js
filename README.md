@@ -1,173 +1,163 @@
-# Sonner for Pure JS
+<div align="center">
+  <h1>🍞 Sonner for Pure JS</h1>
+  <p>An elegant toast component designed for Pure JavaScript</p>
 
-An opinionated toast component for Pure JS.
+  [![npm version](https://img.shields.io/npm/v/sonner-js.svg?style=flat-square)](https://www.npmjs.com/package/sonner-js)
+  [![npm downloads](https://img.shields.io/npm/dm/sonner-js.svg?style=flat-square)](https://www.npmjs.com/package/sonner-js)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-Base on [Sonner](https://sonner.emilkowal.ski/)
+  <p><em>Built on <a href="https://sonner.emilkowal.ski/">Sonner</a>, optimized for pure JavaScript environments</em></p>
+</div>
 
-## Usage
+---
 
-To start using the library, install it in your project:
+## ✨ Features
+
+- 🚀 **Zero Dependencies** - Pure JavaScript implementation, no frameworks required
+- 📱 **Responsive Design** - Perfect adaptation for mobile and desktop
+- 🎨 **Multiple Styles** - Support for success, error, warning, info and more types
+- ⚡ **Lightweight** - Small bundle size with excellent performance
+- 🔧 **Highly Customizable** - Rich configuration options
+- 🌙 **Theme Support** - Built-in light and dark themes
+- 📦 **Multi-format Support** - UMD, ESM, CommonJS formats
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
 npm install sonner-js
 ```
 
-Then import it and use it directly.
+### Basic Usage
 
-```js
+```javascript
 import toast from 'sonner-js';
 
-toast('My first toast');
+// Simple toast
+toast('Hello World!');
+
+// Toast with description
+toast('Operation successful', {
+    description: 'Your data has been saved'
+});
 ```
 
-### UMD
+## 📖 Usage Guide
 
-You can use plain `<script>` to import sonner-js from CDNs, like:
+### Different Toast Types
+
+```javascript
+// Success toast
+toast.success('Operation successful');
+
+// Error toast
+toast.error('Operation failed');
+
+// Info toast
+toast.info('This is an information');
+
+// Warning toast
+toast.warning('Please note');
+```
+
+### Toast with Action Buttons
+
+```javascript
+toast('Confirm action', {
+    action: {
+        label: 'Confirm',
+        onClick: () => console.log('User clicked confirm')
+    }
+});
+
+// With cancel button
+toast('Confirm deletion', {
+    action: {
+        label: 'Cancel',
+        onClick: () => console.log('User cancelled operation'),
+        cancel: true
+    }
+});
+```
+
+### Promise Handling
+
+```javascript
+const fetchData = () => fetch('/api/data');
+
+toast.promise(fetchData, {
+    loading: 'Loading...',
+    success: 'Data loaded successfully',
+    error: 'Failed to load data'
+});
+```
+
+### Update and Dismiss Toasts
+
+```javascript
+// Create toast and get ID
+const toastId = toast('Processing...');
+
+// Update toast
+toast.success('Processing complete', { id: toastId });
+
+// Dismiss specific toast
+toast.dismiss(toastId);
+
+// Dismiss all toasts
+toast.dismiss();
+```
+
+### Permanent Toasts
+
+```javascript
+toast('Important notice', {
+    duration: 0  // Set to 0 for permanent display
+});
+```
+
+## 🌐 CDN Usage
+
+### UMD Format
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/sonner-js/dist/umd/index.min.js"></script>
-```
-
-Then you can use it from a global `sonnerJS` variable:
-
-```html
 <script>
-    sonnerJS('My first toast');
-    // or
-    const sonner = sonnerJS;
-    sonner('My first toast');
+    sonnerJS('Hello from CDN!');
 </script>
 ```
 
-### ESM
-
-You can use `<script type="module">` to import sonner-js from CDNs, like:
+### ESM Format
 
 ```html
 <script type="module">
     import toast from 'https://cdn.jsdelivr.net/npm/sonner-js/+esm';
-    toast('My first toast');
+    toast('Hello from ESM!');
 </script>
 ```
 
-## Types
+## ⚙️ Configuration Options
 
-### Default
+```javascript
+import toast from 'sonner-js';
 
-```js
-toast('Event has been created');
-```
-
-With custom description:
-
-```js
-toast('Event has been created', {
-    description: 'This is a description',
+// Global configuration
+toast.config({
+    theme: 'dark',           // 'light' | 'dark'
+    position: 'top-right',   // Position
+    duration: 4000,         // Duration in milliseconds
+    closeButton: true,      // Show close button
+    richColors: true,        // Rich colors
+    expand: true,           // Expand animation
+    visibleToasts: 3,       // Number of visible toasts
+    gap: 8,                 // Toast spacing
+    offset: 16,             // Margin
+    mobileOffset: 16,       // Mobile margin
+    dir: 'ltr'              // Text direction
 });
 ```
 
-### Success
+## 📄 License
 
-```js
-toast.success('Event has been created');
-```
-
-### Error
-
-```js
-toast.error('Event has not been created');
-```
-
-### Info
-
-```js
-toast.info('Be at the area 10 minutes before the event time');
-```
-
-### Warning
-
-```js
-toast.warning('Be at the area 10 minutes before the event time');
-```
-
-### Action
-
-```js
-toast('Event has been created', {
-    action: {
-        label: 'Action',
-        onClick: () => console.log('Action!'),
-    },
-});
-```
-
-With cancel button:
-
-```js
-toast('Event has been created', {
-    action: {
-        label: 'Cancel',
-        onClick: () => console.log('Cancel!'),
-        cancel: true,
-    },
-});
-```
-
-### Promise
-
-```js
-const promise = () => new Promise(resolve => {
-    setTimeout(() => resolve({ name: 'Sonner' }), 2000);
-});
-toast.promise(promise, {
-    loading: 'Loading...',
-    success: data => {
-        return `${data.name} toast has been added`;
-    },
-    error: 'Error',
-});
-```
-
-## Others
-
-### Update toasts
-
-You can update existing toast by passing the toast id:
-
-```js
-const id = toast('Toast has been updated');
-
-toast.success('Toast has been updated', {
-    id: toastId,
-});
-```
-
-### Dismiss toasts
-
-You can dismiss toast by use `toast.dismiss()`
-
-```js
-const toastId = toast('Event has been created');
-
-toast.dismiss(toastId);
-```
-
-You can also dismiss all toasts by without an id.
-
-```js
-toast.dismiss();
-```
-
-### Permanent toasts
-
-If you want a toast to never disappear, you can set the `duration` to `0`.
-
-```js
-toast('Event has been created', {
-    duration: 0,
-});
-```
-
-## License
-
-MIT Licensed.
+MIT License - see [LICENSE](LICENSE) file for details.
