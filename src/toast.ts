@@ -2,6 +2,7 @@ import { closeIcon } from './assets';
 import { errorIcon, infoIcon, loadingIcon, successIcon, warningIcon } from './assets';
 import { config } from './config';
 import { assignOffset, getToaster } from './toaster';
+import { __unsafeCreateTrustedHtml } from './trusted-types';
 import { ToastType } from './types';
 
 const icons = { success: successIcon, error: errorIcon, info: infoIcon, warning: warningIcon, loading: loadingIcon };
@@ -34,7 +35,8 @@ export function addToast(options: ToastType) {
     // add close button
     const close = document.createElement('button');
     close.setAttribute('data-close-button', closeButton.toString());
-    close.innerHTML = closeIcon;
+    // we already know our icon would be safe
+    close.innerHTML = __unsafeCreateTrustedHtml(closeIcon);
     close.addEventListener('click', () => {
         dismissToast(id);
         onDismiss();
@@ -43,7 +45,8 @@ export function addToast(options: ToastType) {
 
     if (options.type) {
         const icon = document.createElement('span');
-        icon.innerHTML = icons[options.type];
+        // we already know our icons would be safe
+        icon.innerHTML = __unsafeCreateTrustedHtml(icons[options.type]);
         icon.setAttribute('data-icon', '');
         toast.appendChild(icon);
 
@@ -61,7 +64,9 @@ export function addToast(options: ToastType) {
 
     const title = document.createElement('div');
     title.setAttribute('data-title', '');
-    title.innerHTML = options.title;
+
+    // the title is supplemented with user content, we can only assume it might be safe
+    title.innerHTML = __unsafeCreateTrustedHtml(options.title);
     content.appendChild(title);
 
     if (options.description) {
