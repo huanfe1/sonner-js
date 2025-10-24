@@ -1,34 +1,15 @@
 name: Publish to NPM
 
-permissions:
-    contents: write
-    id-token: write # Required for OIDC
-
 on:
     push:
         tags:
             - "v*"
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: latest
-                  run_install: false
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  cache: pnpm
-                  registry-url: "https://registry.npmjs.org"
-            - run: npx changelogithub
-              continue-on-error: true
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - run: pnpm install --frozen-lockfile
-            - run: pnpm run build
-            - run: npm publish
+    release:
+        uses: sxzz/workflows/.github/workflows/release.yml@v1
+        with:
+            publish: true
+        permissions:
+            contents: write
+            id-token: write
