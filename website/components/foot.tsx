@@ -6,8 +6,8 @@ export default function Foot() {
             <div className="container max-w-[642px] flex items-center">
                 <Image src="https://github.com/huanfe1.png?v=4&size=96" alt="huanfei" width={24} height={24} className="rounded-full mr-2" />
                 <span className="mx-1">By</span>
-                <a className="font-medium hover:underline" href="https://huanfei.top" target="_blank">
-                    Huanfei
+                <a className="font-medium hover:underline" href="https://huanfe1.com" target="_blank">
+                    huanfei
                 </a>
             </div>
         </div>

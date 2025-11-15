@@ -5,7 +5,7 @@ import '@/styles/globals.css';
 import '@/styles/index.css';
 import '@/styles/style.css';
 
-const ogImage = 'https://sonner-js.huanfei.top/og.png';
+const ogImage = 'https://sonner-js.huanfe1.com/og.png';
 
 export const metadata: Metadata = {
     title: 'Sonner-JS',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Sonner-JS',
         description: 'An opinionated toast component for Pure JS.',
-        url: 'https://sonner-js.huanfei.top/',
+        url: 'https://sonner-js.huanfe1.com/',
         siteName: 'Sonner-JS',
         locale: 'en',
         type: 'website',
