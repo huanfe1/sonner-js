@@ -1,4 +1,4 @@
-import { config } from './config';
+import { config, registerConfigUpdateCallback } from './config';
 import { Position } from './types';
 
 // import './style.scss';
@@ -18,7 +18,7 @@ function getContainer(): ShadowRoot {
     return shadow;
 }
 
-export function updateToasterConfig() {
+function updateToasterConfig() {
     const container = getContainer();
     (container.querySelectorAll('[data-sonner-toaster]') as NodeListOf<HTMLElement>).forEach(toaster => {
         toaster.setAttribute('data-expand', config.expand.toString());
@@ -107,3 +107,6 @@ export function getOffset(el: Element): number {
 function getPropertyValue(el: Element, key: string) {
     return getComputedStyle(el).getPropertyValue(`--${key}`);
 }
+
+// Register the config update callback to break circular dependency
+registerConfigUpdateCallback(updateToasterConfig);

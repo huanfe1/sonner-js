@@ -1,4 +1,3 @@
-import { updateToasterConfig } from './toaster';
 import { ToastOptionsType, ToasterType } from './types';
 
 const defaultConfig: Omit<Required<ToasterType>, 'toastOptions'> & { toastOptions: Required<ToastOptionsType> } = {
@@ -22,11 +21,17 @@ const defaultConfig: Omit<Required<ToasterType>, 'toastOptions'> & { toastOption
 
 export let config = { ...defaultConfig };
 
+let configUpdateCallback: (() => void) | null = null;
+
+export function registerConfigUpdateCallback(callback: () => void) {
+    configUpdateCallback = callback;
+}
+
 export function setConfig(userConfig: ToasterType) {
     config = {
         ...defaultConfig,
         ...userConfig,
         toastOptions: { ...defaultConfig.toastOptions, ...userConfig.toastOptions },
     };
-    updateToasterConfig();
+    configUpdateCallback?.();
 }
